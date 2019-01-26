@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/cars/sell}">
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Manufacturer</th>
+            <th>Model</th>
+            <th>Rok produkcji</th>
+            <th>Przebieg</th>
+            <th>Paliwo</th>
+            <th>Kwota</th>
+        </tr>
+        <tr>
+            <td th:text="${car.id}"><input name="carId" type="hidden" value="${car.id}"></td>
+            <td th:text="${car.manufacturer}"></td>
+            <td th:text="${car.model}"></td>
+            <td th:text="${car.productionYear}"></td>
+            <td th:text="${car.mileage}"></td>
+            <td th:text="${car.fuelType}"></td>
+            <td>Cena: <input type="text" th:field="${sell.amount}"></td>
+            <td><input type="submit">sprzedaj</td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

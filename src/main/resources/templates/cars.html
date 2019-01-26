@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Vehicle details with Thymeleaf</title>
+</head>
+<body>
+<h1>Vehicle details with Thymeleaf</h1>
+<div th:unless="${carList.isEmpty()}">
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Manufacturer</th>
+        <th>Model</th>
+        <th>Production Year</th>
+        <th>Mileage</th>
+        <th>Fuel</th>
+    </tr>
+    <tr th:each="vehicle : ${carList}">
+        <td th:text="${vehicle.id}"></td>
+        <td th:text="${vehicle.manufacturer}"></td>
+        <td th:text="${vehicle.model}"></td>
+        <td th:text="${vehicle.productionYear}"></td>
+        <td th:text="${vehicle.mileage}"></td>
+        <td th:text="${vehicle.fuelType}"></td>
+        <td><a th:href="@{/cars/{vehId}/sellForm (vehId=${vehicle.id})}">sprzedaj</a></td>
+    </tr>
+</table>
+</div>
+<!--Jeśli nie ma samochodów w bazie-->
+<div th:if="${carList.isEmpty()}">Nie ma samochodów. <br>Chcesz jakiś <a th:href="@{/cars/addForm}">kupić?</a></div>
+<div th:unless="${carList.isEmpty()}"><a th:href="@{/cars/addForm}">Kup samochód</a></div>
+</body>
+</html>

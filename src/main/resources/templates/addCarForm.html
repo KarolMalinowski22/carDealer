@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new car</title>
+</head>
+<body>
+<form th:action="@{/cars/add}" th:object="${newCar}">
+    <table>
+        <tr><td>VIN
+            <input type="text" th:field="*{vin}"></td></tr>
+            <tr><td>MODEL
+                <input type="text" th:field="*{model}"></td></tr>
+            <tr><td>MARKA
+                <input type="text" th:field="*{manufacturer}"></td></tr>
+            <tr><td>ROCZNIK
+                <input type="text" th:field="*{productionYear}"></td></tr>
+            <tr><td>POJEMNOŚĆ
+                <input type="text" th:field="*{engineType}"></td></tr>
+            <tr><td>MOC
+                <input type="text" th:field="*{power}"></td></tr>
+            <tr><td>PALIWO
+                <input type="text" th:field="*{fuelType}"></td></tr>
+            <tr><td>SKRZYNIA BIEGÓW
+                <input type="text" th:field="*{transmission}"></td></tr>
+            <tr><td>NUMER REJESTRACYJNY
+                <input type="text" th:field="*{registrationNumber}"></td></tr>
+            <tr><td>NUMER POLISY OC
+                <input type="text" th:field="*{ocInsuranceNumber}"></td></tr>
+            <tr><td>OPIS
+                <input type="text" th:field="*{description}"></td></tr>
+        <tr><td><input type="submit"></td></tr>
+    </table>
+</form>
+</body>
+</html>
