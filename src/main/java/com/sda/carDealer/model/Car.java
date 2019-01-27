@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     private String vin;
     private String manufacturer;
     private String model;
@@ -31,4 +31,7 @@ public class Car {
     private String description;
     @Column(name="production_year")
     private String productionYear;
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "ownerId")
+    private Owner owner;
 }

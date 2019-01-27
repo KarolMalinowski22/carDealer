@@ -1,12 +1,12 @@
 package com.sda.carDealer.repository;
 
-import com.sda.carDealer.model.Sell;
+import com.sda.carDealer.model.Buy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface SellRepository extends JpaRepository<Sell, Long> {
-    @Query("select c.id from Sell s inner join s.car c")
+public interface BuyRepository extends JpaRepository<Buy, Long> {
+    @Query("select c.id from Buy b inner join b.car c")
     List<Long> getAllCarsId();
 }

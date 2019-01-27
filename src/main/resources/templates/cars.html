@@ -28,7 +28,7 @@
 </table>
 </div>
 <!--Jeśli nie ma samochodów w bazie-->
-<div th:if="${carList.isEmpty()}">Nie ma samochodów. <br>Chcesz jakiś <a th:href="@{/cars/addForm}">kupić?</a></div>
-<div th:unless="${carList.isEmpty()}"><a th:href="@{/cars/addForm}">Kup samochód</a></div>
+<div th:if="${carList.isEmpty()}">Nie ma samochodów. <br>Chcesz jakiś <a th:href="@{/cars/buyForm}">kupić?</a></div>
+<div th:unless="${carList.isEmpty()}"><a th:href="@{/cars/buyForm}">Kup samochód</a></div>
 </body>
 </html>

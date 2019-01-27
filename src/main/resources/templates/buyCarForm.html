@@ -5,7 +5,7 @@
     <title>Add new car</title>
 </head>
 <body>
-<form th:action="@{/cars/add}" th:object="${newCar}">
+<form th:action="@{/cars/buy}" th:object="${newCar}">
     <table>
         <tr><td>VIN
             <input type="text" th:field="*{vin}"></td></tr>
@@ -29,6 +29,13 @@
                 <input type="text" th:field="*{ocInsuranceNumber}"></td></tr>
             <tr><td>OPIS
                 <input type="text" th:field="*{description}"></td></tr>
+            <tr><td>CENA
+                <input name="price" type="text">
+            </td></tr>
+        <tr><td>Dane właściciela:</td></tr>
+        <tr><td>Imię: <input type="text" th:field="${owner.firstName}"></td></tr>
+        <tr><td>Nazwisko: <input type="text" th:field="${owner.lastName}"></td></tr>
+        <tr><td>Numer dowodu osobistego: <input type="text" th:field="${owner.idCardNumber}"></td></tr>
         <tr><td><input type="submit"></td></tr>
     </table>
 </form>

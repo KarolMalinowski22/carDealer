@@ -5,7 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/cars/sell}">
+<form th:action="@{/cars/{carId}/sell (carId=${car.id})}">
+    <input th:attr="name='carId'" type="hidden" th:field="${car.id}">
     <table>
         <tr>
             <th>ID</th>
@@ -17,13 +18,13 @@
             <th>Kwota</th>
         </tr>
         <tr>
-            <td th:text="${car.id}"><input name="carId" type="hidden" value="${car.id}"></td>
+            <td th:text="${car.id}"></td>
             <td th:text="${car.manufacturer}"></td>
             <td th:text="${car.model}"></td>
             <td th:text="${car.productionYear}"></td>
             <td th:text="${car.mileage}"></td>
             <td th:text="${car.fuelType}"></td>
-            <td>Cena: <input type="text" th:field="${sell.amount}"></td>
+            <td>Cena: <input name="amount" type="text"></td>
             <td><input type="submit">sprzedaj</td>
         </tr>
     </table>
