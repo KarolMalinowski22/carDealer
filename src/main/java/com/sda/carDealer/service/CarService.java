@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Service
 public class CarService implements CarServiceInterface{
@@ -30,25 +31,9 @@ public class CarService implements CarServiceInterface{
     public List<Car> getAllAvailable() {
         List<Buy> buys = buyRepository.findAll();
         List<Sell> sells = sellRepository.findAll();
-        buys.stream().map(carId -> )
-        List<Car> cars = new ArrayList<>();
-        Set<Long> set = new HashSet<>();
-
-
-        if(sells.size() == 0){
-            buys.forEach(buy -> set.add(buy.getCar().getId()));
-        }else {
-            //todo: this is fucked up
-            buys.forEach(buy -> sells.forEach(sell -> {
-                if (!buy.getCar().getId().equals(sell.getCar().getId())) {
-                    set.add(buy.getCar().getId());
-                }
-            }));
-        }
-        cars.addAll(carRepository.findAllById(set));
-        if(cars.isEmpty()){
-            cars.add(new Car());
-        }
+        List<Car> cars = buys.stream().map(buy -> buy.getCar()).collect(Collectors.toList());
+        List<Car> carsSold = sells.stream().map(sell -> sell.getCar()).collect(Collectors.toList());
+        cars.removeAll(carsSold);
         return cars;
     }
 
