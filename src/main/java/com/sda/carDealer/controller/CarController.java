@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.jws.WebParam;
 import javax.validation.Valid;
@@ -31,7 +28,7 @@ import java.util.stream.Collectors;
 
 
 @Controller
-@RequestMapping("/cars")
+//@RequestMapping("/cars")
 public class CarController {
     @Autowired
     private CarServiceInterface carService;
@@ -84,37 +81,32 @@ public class CarController {
         return "redirect:/cars";
     }
 
-    @RequestMapping("/{id}/sellForm")
-    public String sellCarForm(@PathVariable("id") Long carId, Model model) {
-
-
-
+    @GetMapping("/{carId}/sell")
+    public String sellCarForm(@PathVariable("carId") Long carId, Model model) {
         Optional<Car> carOptional = carService.findById(carId);
         if (carOptional.isPresent()) {
             Car car = carOptional.get();
             model.addAttribute("car", car);
+            Sell sell = new Sell();
+            model.addAttribute("sell", sell);
         }
         return "sellCarForm";
     }
 
-    @RequestMapping("/{carId}/sell")
-    @PostMapping
-    public String sellCar(@PathVariable("carId") Long id,
-                          @ModelAttribute("carId") String carIdString,
-                          @Valid @ModelAttribute("amount") String amountString,
-                          Model model, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){return "redirect:/cars";}
-        BigDecimal amount = new BigDecimal(amountString);
-        Optional<Car> optionalCar = carService.findById(id);
-        if (optionalCar.isPresent()) {
-            Sell sell = new Sell();
-            sell.setPrice(amount);
+    @PostMapping("/{carId}/sell")
+    public String sellCar(@Valid @ModelAttribute("sell") Sell sell,
+                          BindingResult bindingResult,
+            @PathVariable("carId") Long carId,
+                          Model model) {
+
+        Car car = carService.findById(carId).get();
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("car", car);
+            return "sellCarForm";}
+            sell.setCar(car);
             sell.setDate(Timestamp.valueOf(LocalDateTime.now()));
-            sell.setCar(optionalCar.get());
             sellService.createNewSell(sell);
             return "redirect:/cars";
-        } else {
-            return "";
-        }
     }
 }

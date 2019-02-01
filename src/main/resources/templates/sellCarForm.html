@@ -5,8 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/cars/{carId}/sell (carId=${car.id})}">
-    <input th:attr="name='carId'" type="hidden" th:field="${car.id}">
+<form th:action="@{/{carId}/sell (carId=${car.id})}" th:object="${sell}" method="post">
     <table>
         <tr>
             <th>ID</th>
@@ -24,8 +23,10 @@
             <td th:text="${car.productionYear}"></td>
             <td th:text="${car.mileage}"></td>
             <td th:text="${car.fuelType}"></td>
-            <td>Cena: <input name="amount" type="text"></td>
-            <td><input type="submit">sprzedaj</td>
+            <td>Cena: <input type="text" th:field="*{price}" th:errorClass="fieldError">
+                <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            </td>
+            <td><input type="submit" value="sprzedaj"></td>
         </tr>
     </table>
 </form>

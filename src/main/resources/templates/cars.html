@@ -23,7 +23,7 @@
         <td th:text="${vehicle.productionYear}"></td>
         <td th:text="${vehicle.mileage}"></td>
         <td th:text="${vehicle.fuelType}"></td>
-        <td><a th:href="@{/cars/{vehId}/sellForm (vehId=${vehicle.id})}">sprzedaj</a></td>
+        <td><a th:href="@{/{carId}/sell (carId=${vehicle.id})}">sprzedaj</a></td>
     </tr>
 </table>
 </div>
