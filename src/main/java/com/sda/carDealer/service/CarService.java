@@ -40,8 +40,7 @@ public class CarService implements CarServiceInterface{
     @Override
     public List<Car> getSold() {
         List<Sell> sells = sellRepository.findAll();
-        List<Car> cars = new ArrayList<>();
-        sells.forEach(sell -> cars.add(sell.getCar()));
+        List<Car> cars = sells.stream().map(sell -> sell.getCar()).collect(Collectors.toList());
         return cars;
     }
 

@@ -15,7 +15,7 @@ public class Sell {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //@Min(5000)
+    @Min(5000)
     private BigDecimal price;
     private Timestamp date;
     @OneToOne(cascade = {CascadeType.ALL})
