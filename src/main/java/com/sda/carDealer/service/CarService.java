@@ -2,18 +2,16 @@ package com.sda.carDealer.service;
 
 import com.sda.carDealer.model.Buy;
 import com.sda.carDealer.model.Car;
-import com.sda.carDealer.model.Owner;
+import com.sda.carDealer.model.Customer;
 import com.sda.carDealer.model.Sell;
 import com.sda.carDealer.repository.BuyRepository;
 import com.sda.carDealer.repository.CarRepository;
-import com.sda.carDealer.repository.OwnerRepository;
+import com.sda.carDealer.repository.CustomerRepository;
 import com.sda.carDealer.repository.SellRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +23,7 @@ public class CarService implements CarServiceInterface{
     @Autowired
     private BuyRepository buyRepository;
     @Autowired
-    private OwnerRepository ownerRepository;
+    private CustomerRepository customerRepository;
 
     @Override
     public List<Car> getAllAvailable() {
@@ -50,8 +48,8 @@ public class CarService implements CarServiceInterface{
     }
 
     @Override
-    public void addNewCar(Owner owner, Car newCar) {
-        ownerRepository.save(owner);
+    public void addNewCar(Customer customer, Car newCar) {
+        customerRepository.save(customer);
         carRepository.save(newCar);
     }
 

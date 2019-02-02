@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,26 +15,42 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
+    @Size(min = 10, max = 20)
     private String vin;
+    @NotNull
     private String manufacturer;
+    @NotNull
     private String model;
-    @Column(name="oc_insurance_number")
+    @NotNull
+    @Column(name = "oc_insurance_number")
     private String ocInsuranceNumber;
-    @Column(name="registration_number")
+    @NotNull
+    @Column(name = "registration_number")
     private String registrationNumber;
-    @Column(name="fuel_type")
+    @NotNull
+    @Column(name = "fuel_type")
     private String fuelType;
+    @NotNull
     private Long mileage;
-    @Column(name="engine_type")
+    @NotNull
+    @Column(name = "engine_type")
+    @NotNull
     private String engineType;
+    @NotNull
     private String power;
+    @NotNull
     private String transmission;
-    @Column(name="test_drive_count")
+    @Column(name = "test_drive_count")
     private Long testDriveCount;
+    @NotNull
     private String description;
-    @Column(name="production_year")
+    @NotNull
+    @Column(name = "production_year")
     private String productionYear;
-    @OneToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "ownerId")
-    private Owner owner;
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name="ownership",
+    joinColumns = @JoinColumn(name = "carId"),
+    inverseJoinColumns = @JoinColumn(name = "customerId"))
+    private List<Customer> customers;
 }

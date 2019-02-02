@@ -3,10 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        body {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            background-color: aliceblue;
+        }
+        .sellTable, .sellTable tr, .sellTable td, .sellTable th{
+            border-spacing: 0;
+            border-collapse: collapse;
+            border: black solid 1px;
+            padding: 5px;
+        }
+        input{
+            float: right;
+        }
+    </style>
 </head>
 <body>
 <form th:action="@{/{carId}/sell (carId=${car.id})}" th:object="${sell}" method="post">
-    <table>
+    <table class = "sellTable">
         <tr>
             <th>ID</th>
             <th>Manufacturer</th>
@@ -23,10 +39,10 @@
             <td th:text="${car.productionYear}"></td>
             <td th:text="${car.mileage}"></td>
             <td th:text="${car.fuelType}"></td>
-            <td>Cena: <input type="text" th:field="*{price}" th:errorClass="fieldError">
+            <td>Cena &nbsp; <input type="text" th:field="*{price}" th:errorClass="fieldError">
                 <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
             </td>
-            <td><input type="submit" value="sprzedaj"></td>
+            <td style="border: none;"><input type="submit" value="sprzedaj"></td>
         </tr>
     </table>
 </form>

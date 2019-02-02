@@ -1,7 +1,7 @@
 package com.sda.carDealer.service;
 
 import com.sda.carDealer.model.Car;
-import com.sda.carDealer.model.Owner;
+import com.sda.carDealer.model.Customer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,5 +16,5 @@ public interface CarServiceInterface {
 
     Optional<Car> findById(Long carId);
 
-    void addNewCar(Owner owner, Car newCar);
+    void addNewCar(Customer customer, Car newCar);
 }

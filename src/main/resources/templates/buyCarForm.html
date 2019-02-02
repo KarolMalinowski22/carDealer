@@ -3,41 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <title>Add new car</title>
+    <style>
+        body {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            background-color: aliceblue;
+        }
+
+        .menu {
+            border: double black 2px;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            width: 40%;
+            padding: 5px;
+        }
+
+        .title {
+            grid-column-start: 1;
+            grid-column-end: 4;
+            align-items: center;
+        }
+        .form{
+            display: grid;
+            grid-template-columns: auto auto;
+        }
+        .carTable{
+            border: black solid 1px;
+            grid-column-start: 1;
+            grid-column-end: 2;
+        }
+        .ownerTable{
+            border: black solid 1px;
+            grid-column-start: 2;
+            grid-column-end: 3;
+        }
+        input{
+            float: right;
+        }
+    </style>
 </head>
 <body>
-<form th:action="@{/cars/buy}" th:object="${newCar}">
+<h1 class="title"></h1>
+<div class="menu"><h2>Menu</h2>
+    <a href="/"><img alt="strona główna" src="https://dabuttonfactory.com/button.png?t=Strona+g%C5%82%C3%B3wna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
+<form th:action="@{/buy}" th:object="${newCar}" class="form">
+    <div class="carTable">
     <table>
-        <tr><td>VIN
-            <input type="text" th:field="*{vin}"></td></tr>
-            <tr><td>MODEL
-                <input type="text" th:field="*{model}"></td></tr>
-            <tr><td>MARKA
-                <input type="text" th:field="*{manufacturer}"></td></tr>
-            <tr><td>ROCZNIK
-                <input type="text" th:field="*{productionYear}"></td></tr>
-            <tr><td>POJEMNOŚĆ
-                <input type="text" th:field="*{engineType}"></td></tr>
-            <tr><td>MOC
-                <input type="text" th:field="*{power}"></td></tr>
-            <tr><td>PALIWO
-                <input type="text" th:field="*{fuelType}"></td></tr>
-            <tr><td>SKRZYNIA BIEGÓW
-                <input type="text" th:field="*{transmission}"></td></tr>
-            <tr><td>NUMER REJESTRACYJNY
-                <input type="text" th:field="*{registrationNumber}"></td></tr>
-            <tr><td>NUMER POLISY OC
-                <input type="text" th:field="*{ocInsuranceNumber}"></td></tr>
-            <tr><td>OPIS
-                <input type="text" th:field="*{description}"></td></tr>
-            <tr><td>CENA
-                <input name="price" type="text">
-            </td></tr>
-        <tr><td>Dane właściciela:</td></tr>
-        <tr><td>Imię: <input type="text" th:field="${owner.firstName}"></td></tr>
-        <tr><td>Nazwisko: <input type="text" th:field="${owner.lastName}"></td></tr>
-        <tr><td>Numer dowodu osobistego: <input type="text" th:field="${owner.idCardNumber}"></td></tr>
-        <tr><td><input type="submit"></td></tr>
+        <tr><th>Dane pojazdu:</th></tr>
+        <tr th:unless="${hasBeenSoldBefore == null}">
+            <td><h1>Samochód był już wcześniej sprzedany!</h1></td>
+        </tr>
+        <tr>
+            <td>VIN
+                <input type="text" th:field="*{vin}" th:errorClass="fieldError">
+                <span th:if="${#fields.hasErrors('vin')}" th:errors="*{vin}"></span></td>
+        </tr>
+        <tr>
+            <td>MODEL
+                <input type="text" th:field="*{model}">
+                <span th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></span></td>
+        </tr>
+        <tr>
+            <td>MARKA
+                <input type="text" th:field="*{manufacturer}">
+                <span th:if="${#fields.hasErrors('manufacturer')}" th:errors="*{manufacturer}"></span></td>
+        </tr>
+        <tr>
+            <td>ROCZNIK
+                <input type="text" th:field="*{productionYear}">
+                <span th:if="${#fields.hasErrors('productionYear')}" th:errors="*{productionYear}"></span></td>
+        </tr>
+        <tr>
+            <td>POJEMNOŚĆ
+                <input type="text" th:field="*{engineType}">
+                <span th:if="${#fields.hasErrors('engineType')}" th:errors="*{engineType}"></span></td>
+        </tr>
+        <tr>
+            <td>MOC
+                <input type="text" th:field="*{power}">
+                <span th:if="${#fields.hasErrors('power')}" th:errors="*{power}"></span></td>
+        </tr>
+        <tr>
+            <td>PALIWO
+                <input type="text" th:field="*{fuelType}">
+                <span th:if="${#fields.hasErrors('fuelType')}" th:errors="*{fuelType}"></span></td>
+        </tr>
+        <tr>
+            <td>SKRZYNIA BIEGÓW
+                <input type="text" th:field="*{transmission}">
+                <span th:if="${#fields.hasErrors('transmission')}" th:errors="*{transmission}"></span></td>
+        </tr>
+        <tr>
+            <td>PRZEBIEG
+                <input type="text" th:field="*{mileage}">
+                <span th:if="${#fields.hasErrors('mileage')}" th:errors="*{mileage}"></span></td>
+        </tr>
+        <tr>
+            <td>NUMER REJESTRACYJNY
+                <input type="text" th:field="*{registrationNumber}">
+                <span th:if="${#fields.hasErrors('registrationNumber')}" th:errors="*{registrationNumber}"></span></td>
+        </tr>
+        <tr>
+            <td>NUMER POLISY OC
+                <input type="text" th:field="*{ocInsuranceNumber}">
+                <span th:if="${#fields.hasErrors('ocInsuranceNumber')}" th:errors="*{ocInsuranceNumber}"></span></td>
+        </tr>
+        <tr>
+            <td>OPIS
+                <input type="text" th:field="*{description}">
+                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span></td>
+        </tr>
+        <tr>
+            <td>CENA
+                <input name="price" type="number" required="required">
+            </td>
+        </tr>
     </table>
+    </div>
+    <div class="ownerTable">
+    <table>
+        <tr>
+            <th>Dane klienta:</th>
+        </tr>
+        <tr>
+            <td>Imię <input type="text" th:field="${customer.firstName}" required pattern=".*\S+.*"
+                             title="This field is required"></td>
+        </tr>
+        <tr>
+            <td>Nazwisko <input type="text" th:field="${customer.lastName}" required pattern=".*\S+.*"
+                                 title="This field is required"></td>
+        </tr>
+        <tr>
+            <td>Numer dowodu osobistego <input type="text" th:field="${customer.idCardNumber}" required pattern=".*\S+.*"
+                                                title="This field is required"></td>
+        </tr>
+
+    </table>
+    </div>
+    <input type="submit" value="Kup">
 </form>
 </body>
 </html>

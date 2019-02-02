@@ -20,13 +20,28 @@
             margin-left: 30px;
         }
 
-        .sideMenu {
+        .menu {
             border: double black 2px;
             grid-column-start: 1;
             grid-column-end: 2;
             width: 40%;
             padding: 5px;
         }
+
+        .customersList {
+            grid-column-start: 2;
+            grid-column-end: auto;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        .customersList table, .carList th, .carList td {
+            border: 1px double black;
+            margin: 0px;
+            padding: 5px;
+            gap: 0;
+        }
+
         .topMenu{
             border: double black 2px;
             padding: 5px;
@@ -35,21 +50,6 @@
         .topMenu div{
             float: left;
             margin: 5px;
-        }
-
-
-        .carList {
-            grid-column-start: 2;
-            grid-column-end: auto;
-            border-spacing: 0;
-            border-collapse: collapse;
-        }
-
-        .carList table, .carList th, .carList td {
-            border: 1px double black;
-            margin: 0px;
-            padding: 5px;
-            gap: 0;
         }
 
         .logo {
@@ -64,46 +64,41 @@
 
     <h1 class="title">TWÓJ KOMIS - ONLINE <img alt="car" class="logo"
                                                src="https://i.wpimg.pl/O/320x214/i.wp.pl/a/f/jpeg/28115/multipla.jpeg"></h1>
-    <h2 style="margin-right:20px">Wszystkie samochody</h2>
+    <h2>WSZYSCY KLIENCI</h2>
     <!--Top Menu-->
     <div class="topMenu">
         <div><a th:href="@{/}"><img alt="Pokaż wszystkie samochody" src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+samochody&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
         <div><a th:href="@{/customers}"><img alt="Pokaż wszystkich klientów" src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+klient%C3%B3w&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
     </div>
     <!--Side menu-->
-    <div class="sideMenu">
+    <div class="menu">
         <h2>Menu</h2>
-        <div><a th:href="@{/buyForm}"><img alt="kup samochód"
+        <div ><a th:href="@{/buyForm}"><img alt="kup samochód"
                                             src="https://dabuttonfactory.com/button.png?t=Kup+samoch%C3%B3d&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
         </div>
         <div>
             <a th:href="@{/customerRegistration}"><img alt="kup samochód"
-                                          src="https://dabuttonfactory.com/button.png?t=Zarejestruj+klienta&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+                                                       src="https://dabuttonfactory.com/button.png?t=Zarejestruj+klienta&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
         </div>
     </div>
-    <div class="carList" th:unless="${carList.isEmpty()}">
+    <div class="customersList" th:unless="${customers.isEmpty()}">
         <table cellspacing="0">
             <tr>
                 <th>ID</th>
-                <th>Manufacturer</th>
-                <th>Model</th>
-                <th>Production Year</th>
-                <th>Mileage</th>
-                <th>Fuel</th>
+                <th>Imię</th>
+                <th>Nazwosko</th>
+                <th>Numer dowodu osobistego</th>
             </tr>
-            <tr th:each="vehicle : ${carList}">
-                <td th:text="${vehicle.id}"></td>
-                <td th:text="${vehicle.manufacturer}"></td>
-                <td th:text="${vehicle.model}"></td>
-                <td th:text="${vehicle.productionYear}"></td>
-                <td th:text="${vehicle.mileage}"></td>
-                <td th:text="${vehicle.fuelType}"></td>
-                <td><a th:href="@{/{carId}/sell (carId=${vehicle.id})}">sprzedaj</a></td>
+            <tr th:each="customer : ${customers}">
+                <td th:text="${customer.id}"></td>
+                <td th:text="${customer.firstName}"></td>
+                <td th:text="${customer.lastName}"></td>
+                <td th:text="${customer.idCardNumber}"></td>
             </tr>
         </table>
     </div>
-    <!--Jeśli nie ma samochodów w bazie-->
-    <div th:if="${carList.isEmpty()}">Nie ma samochodów. <br>Chcesz jakiś <a th:href="@{/buyForm}">kupić?</a></div>
+    <!--Jeśli nie ma klientów w bazie-->
+    <div th:if="${customers.isEmpty()}">Nie ma klientów. <br>Wyjdź z domu i poznaj kogoś. <br><a th:href="@{/customerRegistration}">Dodaj nowego klienta</a></div>
 
 
 </div>
