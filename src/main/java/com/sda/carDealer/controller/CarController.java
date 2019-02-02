@@ -65,7 +65,16 @@ public class CarController {
         ///if the car has been sold before
         if (sellService.getAllSell().stream().map(c -> c.getCar().getVin()).collect(Collectors.toList()).contains(newCar.getVin())) {
             model.addAttribute("hasBeenSoldBefore", "Ten samochód został już u nas sprzedany!");
+            model.addAttribute("customer", new Customer());
+            model.addAttribute("newCar", new Car());
             return "buyCarForm";
+        }
+        if(newCar.getCustomers().size() > 0) {
+            ///if car has more than one owner
+            if (carService.findById(newCar.getId()).get().getCustomers().size() > 1) {
+                model.addAttribute("toManyOwners", "Aby kupić samochód, sprzedający musi być jedynym właścicielem pojazdu.");
+                return "buyCarForm";
+            }
         }
         if (bindingResult.hasErrors()) {
             return "buyCarForm";

@@ -14,7 +14,7 @@
             border: double black 2px;
             grid-column-start: 1;
             grid-column-end: 2;
-            width: 40%;
+            width: 60%;
             padding: 5px;
         }
 
@@ -50,9 +50,13 @@
     <div class="carTable">
     <table>
         <tr><th>Dane pojazdu:</th></tr>
-        <tr th:unless="${hasBeenSoldBefore == null}">
+        <tr th:if="${hasBeenSoldBefore != null}">
             <td><h1>Samochód był już wcześniej sprzedany!</h1></td>
         </tr>
+        <tr th:if="${toManyOwners != null}">
+            <td><h1 th:text="${toManyOwners}"></h1></td>
+        </tr>
+
         <tr>
             <td>VIN
                 <input type="text" th:field="*{vin}" th:errorClass="fieldError">
@@ -123,7 +127,7 @@
     <div class="ownerTable">
     <table>
         <tr>
-            <th>Dane klienta:</th>
+            <th>Dane właściciela:</th>
         </tr>
         <tr>
             <td>Imię <input type="text" th:field="${customer.firstName}" required pattern=".*\S+.*"
