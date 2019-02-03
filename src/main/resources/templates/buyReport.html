@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Buy reports</title>
+    <style>
+        .sideMenu {
+            border: double black 2px;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            width: 40%;
+            padding: 5px;
+        }
+        body{
+            display: grid;
+            grid-template-columns: auto auto;
+        }
+        .reportTable table, .reportTable  th, .reportTable td {
+            border: black solid 1px;
+            border-spacing: 0px;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<div style="grid-column-start: 1; grid-column-end: 3">
+    <h1 align="center">Raport kupna</h1>
+</div>
+<!--Side menu-->
+<div class="sideMenu">
+    <h2>Menu</h2>
+    <div>
+        <a th:href="@{/}"><img alt="strona główna" src="https://dabuttonfactory.com/button.png?t=Strona+g%C5%82%C3%B3wna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+    </div>
+    <div>
+        <a th:href="@{/reports/sellReport}"><img alt="Raport sprzedaży" src="https://dabuttonfactory.com/button.png?t=Raport+sprzeda%C5%BCy&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+    </div>
+</div>
+<div class="reportTable">
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Data</th>
+            <th>Samochód</th>
+            <th>Kwota</th>
+            <th>Kupujący</th>
+        </tr>
+        <tr th:each="buy : ${buys}">
+            <td th:text="${buy.id}"></td>
+            <td th:text="${buy.date}"></td>
+            <td th:text="${buy.car.manufacturer} + ' ' + ' ' + ${buy.car.model}"></td>
+            <td th:text="${buy.price}"></td>
+            <td th:text="${buy.customer.firstName} + ' ' + ' ' + ${buy.customer.lastName}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

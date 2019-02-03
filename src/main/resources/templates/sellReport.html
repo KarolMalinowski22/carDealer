@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sell reports</title>
+    <style>
+        .sideMenu {
+            border: double black 2px;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            width: 40%;
+            padding: 5px;
+        }
+        body{
+            display: grid;
+            grid-template-columns: auto auto;
+        }
+        .reportTable table, .reportTable  th, .reportTable td {
+            border: black solid 1px;
+            border-spacing: 0px;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<div style="grid-column-start: 1; grid-column-end: 3">
+    <h1 align="center">Raport sprzedaży</h1>
+</div>
+<!--Side menu-->
+<div class="sideMenu">
+    <h2>Menu</h2>
+    <div>
+        <a th:href="@{/}"><img alt="strona główna" src="https://dabuttonfactory.com/button.png?t=Strona+g%C5%82%C3%B3wna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+    </div>
+    <div>
+        <a th:href="@{/reports/buyReport}"><img alt="raport kupna" src="https://dabuttonfactory.com/button.png?t=Raport+kupna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+    </div>
+</div>
+<div class="reportTable">
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Data</th>
+            <th>Samochód</th>
+            <th>Kwota</th>
+            <th>Kupujący</th>
+            <th>Zysk</th>
+        </tr>
+        <tr th:each="sell : ${sells}">
+            <td th:text="${sell.id}"></td>
+            <td th:text="${sell.date}"></td>
+            <td th:text="${sell.car.manufacturer} + ' ' + ' ' + ${sell.car.model}"></td>
+            <td th:text="${sell.price}"></td>
+            <td th:text="${sell.customer.firstName} + ' ' + ' ' + ${sell.customer.lastName}"></td>
+            <td th:text="${profitMap.get(sell)} + ' ' + 'zł'"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

@@ -10,7 +10,7 @@
             background-color: aliceblue;
         }
 
-        .sellTable, .sellTable tr, .sellTable td, .sellTable th {
+        .carTable, .sellTable tr, .sellTable td, .sellTable th {
             border-spacing: 0;
             border-collapse: collapse;
             border: black solid 1px;
@@ -20,11 +20,25 @@
         input {
             float: right;
         }
+        .ownerTable{
+            grid-column-start: 1;
+            grid-column-end: 2;
+            border: solid black 1px;
+        }
+        .grid{
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-template-rows: auto auto;
+        }
+        .carTable{
+            grid-column-start: 1;
+            grid-column-end: 2;
+        }
     </style>
 </head>
 <body>
-<form th:action="@{/{carId}/sell (carId=${car.id})}" th:object="${sell}" method="post">
-    <div>
+<form th:action="@{/{carId}/sell (carId=${car.id})}" th:object="${sell}" method="post" class="grid">
+    <div class="carTable">
         <table class="sellTable">
             <tr>
                 <th>ID</th>
