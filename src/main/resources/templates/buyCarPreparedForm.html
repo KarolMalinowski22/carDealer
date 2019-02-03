@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new car</title>
+    <style>
+        body {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            background-color: aliceblue;
+        }
+
+        .menu {
+            border: double black 2px;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            width: 60%;
+            padding: 5px;
+        }
+
+        .title {
+            grid-column-start: 1;
+            grid-column-end: 4;
+            align-items: center;
+        }
+        .form{
+            display: grid;
+            grid-template-columns: auto auto;
+        }
+        .carTable{
+            border: black solid 1px;
+            grid-column-start: 1;
+            grid-column-end: 2;
+        }
+        .ownerTable{
+            border: black solid 1px;
+            grid-column-start: 2;
+            grid-column-end: 3;
+        }
+        input{
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<h1 class="title"></h1>
+<div class="menu"><h2>Menu</h2>
+    <a href="/"><img alt="strona główna" src="https://dabuttonfactory.com/button.png?t=Strona+g%C5%82%C3%B3wna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
+<div th:if="${toManyOwners != null}">
+    <h1 th:text="${toManyOwners}"></h1>
+</div>
+<div th:if="${hasBeenSoldBefore != null}">
+    <h1>Samochód był już wcześniej sprzedany!</h1>
+</div>
+<form th:if="${toManyOwners == null || hasBeenSoldBefore == null}" th:action="@{/buyPrepared}" th:object="${car}" class="form" method="post">
+    <div class="carTable">
+        <table>
+            <tr><th>Dane pojazdu:</th></tr>
+            <tr>
+                <td>VIN
+                    <input disabled th:value="*{vin}" type="text">
+                <input th:value="*{id}" name="id" type="hidden"></td>
+            </tr>
+            <tr>
+                <td>MODEL
+                    <input disabled th:value="*{model}" type="text"></td>
+            </tr>
+            <tr>
+                <td>MARKA
+                    <input disabled th:value="*{manufacturer}" type="text"></td>
+            </tr>
+            <tr>
+                <td>ROCZNIK
+                    <input disabled th:value="*{productionYear}" type="text"></td>
+            </tr>
+            <tr>
+                <td>POJEMNOŚĆ
+                    <input disabled th:value="*{engineType}" type="text"></td>
+            </tr>
+            <tr>
+                <td>MOC
+                    <input disabled th:value="*{power}" type="text"></td>
+            </tr>
+            <tr>
+                <td>PALIWO
+                    <input disabled th:value="*{fuelType}" type="text"></td>
+            </tr>
+            <tr>
+                <td>SKRZYNIA BIEGÓW
+                    <input disabled th:value="*{transmission}" type="text"></td>
+            </tr>
+            <tr>
+                <td>PRZEBIEG
+                    <input disabled th:value="*{mileage}" type="text"></td>
+            </tr>
+            <tr>
+                <td>NUMER REJESTRACYJNY
+                    <input disabled th:value="*{registrationNumber}" type="text"></td>
+            </tr>
+            <tr>
+                <td>NUMER POLISY OC
+                    <input disabled th:value="*{ocInsuranceNumber}" type="text"></td>
+            </tr>
+            <tr>
+                <td>OPIS
+                    <input disabled th:value="*{description}" type="text"></td>
+            </tr>
+            <tr>
+                <td>CENA
+                    <input name="price" type="number" required="required">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="ownerTable">
+        <table>
+            <tr>
+                <th>Dane właściciela:</th>
+            </tr>
+            <tr>
+                <td>Imię <input disabled type="text" th:value="*{customers.get(0).firstName}"
+                                title="This field is required"></td>
+            </tr>
+            <tr>
+                <td>Nazwisko <input disabled type="text" th:value="*{customers.get(0).lastName}"
+                                    title="This field is required"></td>
+            </tr>
+            <tr>
+                <td>Numer dowodu osobistego <input disabled type="text" th:value="*{customers.get(0).idCardNumber}"
+                                                   title="This field is required"></td>
+            </tr>
+        </table>
+    </div>
+    <input type="submit" value="Kup">
+</form>
+</body>
+</html>

@@ -46,16 +46,9 @@
 <h1 class="title"></h1>
 <div class="menu"><h2>Menu</h2>
     <a href="/"><img alt="strona główna" src="https://dabuttonfactory.com/button.png?t=Strona+g%C5%82%C3%B3wna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
-<form th:action="@{/buy}" th:object="${newCar}" class="form">
+<form th:action="@{/addCar}" th:object="${newCar}" class="form" method="post">
     <div class="carTable">
     <table>
-        <tr><th>Dane pojazdu:</th></tr>
-        <tr th:if="${hasBeenSoldBefore != null}">
-            <td><h1>Samochód był już wcześniej sprzedany!</h1></td>
-        </tr>
-        <tr th:if="${toManyOwners != null}">
-            <td><h1 th:text="${toManyOwners}"></h1></td>
-        </tr>
 
         <tr>
             <td>VIN
@@ -117,11 +110,7 @@
                 <input type="text" th:field="*{description}">
                 <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span></td>
         </tr>
-        <tr>
-            <td>CENA
-                <input name="price" type="number" required="required">
-            </td>
-        </tr>
+
     </table>
     </div>
     <div class="ownerTable">
@@ -141,9 +130,10 @@
             <td>Numer dowodu osobistego <input type="text" th:field="${customer.idCardNumber}" required pattern=".*\S+.*"
                                                 title="This field is required"></td>
         </tr>
+
     </table>
     </div>
-    <input type="submit" value="Kup">
+    <input type="submit" value="Dodaj">
 </form>
 </body>
 </html>

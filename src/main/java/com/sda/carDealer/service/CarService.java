@@ -25,8 +25,25 @@ public class CarService implements CarServiceInterface{
     @Autowired
     private CustomerRepository customerRepository;
 
+
+    @Override
+    public Car saveCar(Car car) {
+        return carRepository.save(car);
+    }
+
+    @Override
+    public List<Customer> setNewOwners() {
+        return null;
+    }
+
     @Override
     public List<Car> getAllAvailable() {
+        List<Car> cars = carRepository.findAll();
+        cars.removeAll(carRepository.findAllById(sellRepository.getAllCarsId()));
+        return cars;
+    }
+    @Override
+    public List<Car> getAllAvailableShopOwned() {
         List<Buy> buys = buyRepository.findAll();
         List<Sell> sells = sellRepository.findAll();
         List<Car> cars = buys.stream().map(buy -> buy.getCar()).collect(Collectors.toList());
@@ -34,6 +51,7 @@ public class CarService implements CarServiceInterface{
         cars.removeAll(carsSold);
         return cars;
     }
+
 
     @Override
     public List<Car> getSold() {

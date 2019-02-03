@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Optional;
 @Service
 public interface CarServiceInterface {
+    Car saveCar(Car car);
+    List<Customer> setNewOwners();
     List<Car> getAllAvailable();
-
+    public List<Car> getAllAvailableShopOwned();
     List<Car> getSold();
 
     void deleteById(Long id);

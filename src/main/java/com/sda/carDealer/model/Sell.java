@@ -23,4 +23,7 @@ public class Sell {
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "carId")
     private Car car;
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "nextOwner")
+    private Customer customer;
 }

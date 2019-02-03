@@ -5,9 +5,7 @@ import com.sda.carDealer.model.Car;
 import com.sda.carDealer.model.Customer;
 import com.sda.carDealer.model.Sell;
 import com.sda.carDealer.repository.SellRepository;
-import com.sda.carDealer.service.BuyServiceInterface;
-import com.sda.carDealer.service.CarServiceInterface;
-import com.sda.carDealer.service.SellServiceInterface;
+import com.sda.carDealer.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +16,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,27 +25,49 @@ import java.util.stream.Collectors;
 @Controller
 //@RequestMapping("/cars")
 public class CarController {
+    private final Long shopId = 1L;
     @Autowired
     private CarServiceInterface carService;
-    @Autowired
-    private SellRepository sellRepository;
     @Autowired
     private BuyServiceInterface buyService;
     @Autowired
     private SellServiceInterface sellService;
+    @Autowired
+    private CustomerServiceInterface customerService;
 
     @RequestMapping()
     public String showAll(Model model) {
         List<Car> allCars = carService.getAllAvailable();
-
         model.addAttribute("carList", allCars);
+
         return "cars";
     }
 
-    @RequestMapping("/{id}/delete")
-    public String deleteById(@PathVariable Long id, Model model) {
-        carService.deleteById(id);
-        return "redirect:/cars";
+    @RequestMapping("/addCar")
+    public String addCarForm(Model model) {
+        model.addAttribute("customer", new Customer());
+        model.addAttribute("newCar", new Car());
+        return "addCarForm";
+    }
+
+    @PostMapping("/addCar")
+    public String addCar(@Valid @ModelAttribute("newCar") Car newCar,
+                         BindingResult bindingResultCar,
+                         @ModelAttribute("owner") Customer customer,
+                         BindingResult bindingResultCustomer,
+                         Model model) {
+        if (bindingResultCar.hasErrors() || bindingResultCustomer.hasErrors()) {
+            model.addAttribute("customer", new Customer());
+            model.addAttribute("newCar", new Car());
+            return "addCarForm";
+        }
+        customer = customerService.addNewCustomer(customer);
+        if (newCar.getCustomers() == null) {
+            newCar.setCustomers(new ArrayList<>());
+        }
+        newCar.getCustomers().add(customer);
+        carService.addNewCar(customer, newCar);
+        return "redirect:/";
     }
 
     @RequestMapping("/buyForm")
@@ -69,7 +90,7 @@ public class CarController {
             model.addAttribute("newCar", new Car());
             return "buyCarForm";
         }
-        if(newCar.getCustomers().size() > 0) {
+        if (newCar.getCustomers().size() > 0) {
             ///if car has more than one owner
             if (carService.findById(newCar.getId()).get().getCustomers().size() > 1) {
                 model.addAttribute("toManyOwners", "Aby kupić samochód, sprzedający musi być jedynym właścicielem pojazdu.");
@@ -83,6 +104,7 @@ public class CarController {
         buy.setCar(newCar);
         buy.setDate(Timestamp.valueOf(LocalDateTime.now()));
         buy.setPrice(new BigDecimal(priceString));
+        buy.setCustomer(customer);
         //todo: Write test
 
         buyService.createNewBuy(buy);
@@ -92,14 +114,54 @@ public class CarController {
         return "redirect:/";
     }
 
+    @RequestMapping("/{id}/buy")
+    public String buyCarPreparedForm(Model model, @PathVariable(name = "id") Long carId) {
+        Car car = carService.findById(carId).get();
+        model.addAttribute("car", car);
+        return "buyCarPreparedForm";
+    }
+
+    @PostMapping("/buyPrepared")
+    public String buyCarPrepared(@ModelAttribute(name = "id") Long carId,
+                                 @ModelAttribute(name = "price")String price, Model model) {
+        Car car = carService.findById(carId).get();
+        ///if the car has been sold before
+        if (sellService.getAllSell().stream().map(c -> c.getCar().getVin()).collect(Collectors.toList()).contains(car.getVin())) {
+            model.addAttribute("hasBeenSoldBefore", "Ten samochód został już u nas sprzedany!");
+            model.addAttribute("newCar", car);
+            return "buyCarPreparedForm";
+        }
+        if (carService.findById(carId).get().getCustomers().size() > 1) {
+            model.addAttribute("toManyOwners", "Aby kupić samochód, sprzedający musi być jedynym właścicielem pojazdu.");
+            return "buyCarPreparedForm";
+        }
+        Buy buy = new Buy();
+        buy.setPrice(new BigDecimal(price));
+        buy.setDate(Timestamp.valueOf(LocalDateTime.now()));
+        buy.setCar(car);
+        buy.setCustomer(car.getCustomers().get(0));
+        buyService.createNewBuy(buy);
+        ArrayList<Customer> customers = new ArrayList<>();
+        customers.add(customerService.getById(shopId).get());
+        car.setCustomers(customers);
+        carService.saveCar(car);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/{id}/delete")
+    public String deleteById(@PathVariable Long id, Model model) {
+        carService.deleteById(id);
+        return "redirect:/cars";
+    }
+
     @GetMapping("/{carId}/sell")
     public String sellCarForm(@PathVariable("carId") Long carId, Model model) {
         Optional<Car> carOptional = carService.findById(carId);
         if (carOptional.isPresent()) {
             Car car = carOptional.get();
             model.addAttribute("car", car);
-            Sell sell = new Sell();
-            model.addAttribute("sell", sell);
+            model.addAttribute("sell", new Sell());
+            model.addAttribute("customer", new Customer());
         }
         return "sellCarForm";
     }
@@ -107,6 +169,7 @@ public class CarController {
     @PostMapping("/{carId}/sell")
     public String sellCar(@Valid @ModelAttribute("sell") Sell sell,
                           BindingResult bindingResult,
+                          @ModelAttribute("customer") Customer customer,
                           @PathVariable("carId") Long carId,
                           Model model) {
 
@@ -116,9 +179,19 @@ public class CarController {
             model.addAttribute("car", car);
             return "sellCarForm";
         }
+        for(Customer c : customerService.getAll()){
+            if(c.equals(customer)){
+                customer = c;
+                break;
+            }
+        }
         sell.setCar(car);
         sell.setDate(Timestamp.valueOf(LocalDateTime.now()));
+        sell.setCustomer(customer);
         sellService.createNewSell(sell);
+        car.getCustomers().clear();
+        car.getCustomers().add(customer);
+        carService.saveCar(car);
         return "redirect:/cars";
     }
 }

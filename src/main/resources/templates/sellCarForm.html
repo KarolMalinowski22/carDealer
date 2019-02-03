@@ -9,42 +9,66 @@
             grid-template-columns: auto auto auto;
             background-color: aliceblue;
         }
-        .sellTable, .sellTable tr, .sellTable td, .sellTable th{
+
+        .sellTable, .sellTable tr, .sellTable td, .sellTable th {
             border-spacing: 0;
             border-collapse: collapse;
             border: black solid 1px;
             padding: 5px;
         }
-        input{
+
+        input {
             float: right;
         }
     </style>
 </head>
 <body>
 <form th:action="@{/{carId}/sell (carId=${car.id})}" th:object="${sell}" method="post">
-    <table class = "sellTable">
-        <tr>
-            <th>ID</th>
-            <th>Manufacturer</th>
-            <th>Model</th>
-            <th>Rok produkcji</th>
-            <th>Przebieg</th>
-            <th>Paliwo</th>
-            <th>Kwota</th>
-        </tr>
-        <tr>
-            <td th:text="${car.id}"></td>
-            <td th:text="${car.manufacturer}"></td>
-            <td th:text="${car.model}"></td>
-            <td th:text="${car.productionYear}"></td>
-            <td th:text="${car.mileage}"></td>
-            <td th:text="${car.fuelType}"></td>
-            <td>Cena &nbsp; <input type="text" th:field="*{price}" th:errorClass="fieldError">
-                <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
-            </td>
-            <td style="border: none;"><input type="submit" value="sprzedaj"></td>
-        </tr>
-    </table>
+    <div>
+        <table class="sellTable">
+            <tr>
+                <th>ID</th>
+                <th>Manufacturer</th>
+                <th>Model</th>
+                <th>Rok produkcji</th>
+                <th>Przebieg</th>
+                <th>Paliwo</th>
+                <th>Kwota</th>
+            </tr>
+            <tr>
+                <td th:text="${car.id}"></td>
+                <td th:text="${car.manufacturer}"></td>
+                <td th:text="${car.model}"></td>
+                <td th:text="${car.productionYear}"></td>
+                <td th:text="${car.mileage}"></td>
+                <td th:text="${car.fuelType}"></td>
+                <td>Cena &nbsp; <input type="text" th:field="*{price}" th:errorClass="fieldError">
+                    <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="ownerTable">
+        <table>
+            <tr>
+                <th>Dane nowego właściciela:</th>
+            </tr>
+            <tr>
+                <td>Imię <input type="text" th:field="${customer.firstName}" required pattern=".*\S+.*"
+                                title="This field is required"></td>
+            </tr>
+            <tr>
+                <td>Nazwisko <input type="text" th:field="${customer.lastName}" required pattern=".*\S+.*"
+                                    title="This field is required"></td>
+            </tr>
+            <tr>
+                <td>Numer dowodu osobistego <input type="text" th:field="${customer.idCardNumber}" required
+                                                   pattern=".*\S+.*"
+                                                   title="This field is required"></td>
+            </tr>
+        </table>
+    </div>
+    <input type="submit" value="sprzedaj">
 </form>
 </body>
 </html>
