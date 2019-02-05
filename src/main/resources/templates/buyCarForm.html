@@ -118,6 +118,16 @@
                 <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span></td>
         </tr>
         <tr>
+            <td style="float: left; border: black solid; border-width: 1px 0px 1px 0px; width:100%">USZKODZONY?<br>
+                <label>A skąd!
+                    <input name="damaged" type="radio" th:field="*{isNotDamaged}" value="true" checked="checked" required>
+                </label><br>
+                <label>Tak, uszkodzony.
+                    <input name="damaged" type="radio" th:field="*{isNotDamaged}" value="false" autocomplete="off" >
+                </label>
+            </td>
+        </tr>
+        <tr>
             <td>CENA
                 <input name="price" type="number" required="required">
             </td>

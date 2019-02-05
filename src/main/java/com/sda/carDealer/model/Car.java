@@ -53,5 +53,7 @@ public class Car {
     joinColumns = @JoinColumn(name = "carId"),
     inverseJoinColumns = @JoinColumn(name = "customerId"))
     private List<Customer> customers;
+    @Column(name = "not_damaged")
+    private Boolean isNotDamaged;
 
 }

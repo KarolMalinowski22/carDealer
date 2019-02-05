@@ -123,8 +123,10 @@
                 <td th:text="${car.productionYear}"></td>
                 <td th:text="${car.mileage}"></td>
                 <td th:text="${car.fuelType}"></td>
-                <td><a th:href="@{/{carId}/sell (carId=${car.id})}"><img alt="sprzedaj"
+                <td><a th:if="${car.isNotDamaged}" th:href="@{/{carId}/sell (carId=${car.id})}"><img alt="sprzedaj"
                                                                          src="https://dabuttonfactory.com/button.png?t=sprzedaj&f=Calibri-Bold&ts=20&tc=fff&tshs=1&tshc=000&w=100&h=25&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+                    <img th:unless="${car.isNotDamaged}" th:href="@{/{carId}/sell (carId=${car.id})}" title="nie wolno" alt="uszkodzony"
+                         src="https://dabuttonfactory.com/button.png?t=Uszkodzony&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=100&h=25&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763">
                 </td>
                 <td th:if="${car.customers.get(0).id != 1}"><a th:href="@{/{carId}/buy (carId=${car.id})}"><img
                         alt="kup"
