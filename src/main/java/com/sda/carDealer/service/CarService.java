@@ -9,6 +9,10 @@ import com.sda.carDealer.repository.CarRepository;
 import com.sda.carDealer.repository.CustomerRepository;
 import com.sda.carDealer.repository.SellRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -42,6 +46,23 @@ public class CarService implements CarServiceInterface{
         cars.removeAll(carRepository.findAllById(sellRepository.getAllCarsId()));
         return cars;
     }
+
+    @Override
+    public Page<Car> getAllAvailablePaginated(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<Car> allAvailable = getAllAvailable();
+        List<Car> cars;
+        if(startItem > allAvailable.size()){
+            cars = Collections.emptyList();
+        }else{
+            cars = allAvailable.subList(startItem, Math.min(startItem + pageSize, allAvailable.size()));
+        }
+        Page<Car> carsPage = new PageImpl<>(cars, PageRequest.of(currentPage, pageSize), allAvailable.size());
+        return carsPage;
+    }
+
     @Override
     public List<Car> getAllAvailableShopOwned() {
         List<Buy> buys = buyRepository.findAll();

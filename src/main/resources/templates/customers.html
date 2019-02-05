@@ -35,8 +35,8 @@
             border-collapse: collapse;
         }
 
-        .customersList table, .carList th, .carList td {
-            border: 1px double black;
+        .customersList table, .customersList th, .customersList td {
+            border: 1px solid black;
             margin: 0px;
             padding: 5px;
             gap: 0;
@@ -54,6 +54,16 @@
 
         .logo {
             float: top;
+        }
+        .pagesNumbersBox {
+            grid-column-start: 2;
+        }
+
+        .pagesNumbers{
+            display: inline-flex;
+
+        }
+        .pagesNumbers p, .pagesNumbers a{
         }
     </style>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
@@ -81,7 +91,7 @@
                                                        src="https://dabuttonfactory.com/button.png?t=Zarejestruj+klienta&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
         </div>
     </div>
-    <div class="customersList" th:unless="${customers.isEmpty()}">
+    <div class="customersList" th:unless="${customersPage.isEmpty()}">
         <table cellspacing="0">
             <tr>
                 <th>ID</th>
@@ -89,7 +99,7 @@
                 <th>Nazwosko</th>
                 <th>Numer dowodu osobistego</th>
             </tr>
-            <tr th:each="customer : ${customers}">
+            <tr th:each="customer : ${customersPage}">
                 <td th:text="${customer.id}"></td>
                 <td th:text="${customer.firstName}"></td>
                 <td th:text="${customer.lastName}"></td>
@@ -97,8 +107,16 @@
             </tr>
         </table>
     </div>
+    <div class="pagesNumbersBox">
+        <div th:if="${customersPage.totalPages > 0}" th:each="pageNumber : ${pagesNumbersList}" class="pagesNumbers">
+            <a th:href="@{/customers(size=${customersPage.size}, page=${pageNumber})}"
+               th:text="${pageNumber}"
+               th:unless="${pageNumber == customersPage.getNumber() + 1}"></a>
+            <p th:if="${pageNumber == customersPage.getNumber() + 1}" th:text="${pageNumber}"></p>
+        </div>
+    </div>
     <!--Jeśli nie ma klientów w bazie-->
-    <div th:if="${customers.isEmpty()}">Nie ma klientów. <br>Wyjdź z domu i poznaj kogoś. <br><a th:href="@{/customerRegistration}">Dodaj nowego klienta</a></div>
+    <div th:if="${customersPage.isEmpty()}">Nie ma klientów. <br>Wyjdź z domu i poznaj kogoś. <br><a th:href="@{/customerRegistration}">Dodaj nowego klienta</a></div>
 
 
 </div>

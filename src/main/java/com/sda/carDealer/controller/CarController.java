@@ -7,6 +7,8 @@ import com.sda.carDealer.model.Sell;
 import com.sda.carDealer.repository.SellRepository;
 import com.sda.carDealer.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 @Controller
@@ -36,10 +39,18 @@ public class CarController {
     private CustomerServiceInterface customerService;
 
     @RequestMapping()
-    public String showAll(Model model) {
-        List<Car> allCars = carService.getAllAvailable();
-        model.addAttribute("carList", allCars);
-
+    public String showAll(Model model,
+                          @RequestParam("page") Optional<Integer> page,
+                          @RequestParam("size") Optional<Integer> size) {
+        Integer currentPage = page.orElse(1);
+        Integer currentSize = size.orElse(5);
+        Page<Car> carsPage = carService.getAllAvailablePaginated(PageRequest.of(currentPage - 1, currentSize));
+        model.addAttribute("carsPage", carsPage);
+        Integer totalPages = carsPage.getTotalPages();
+        if(totalPages > 0){
+            List<Integer> pagesNumbersList = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+            model.addAttribute("pagesNumbersList", pagesNumbersList);
+        }
         return "cars";
     }
 
