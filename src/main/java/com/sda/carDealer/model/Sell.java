@@ -25,5 +25,5 @@ public class Sell {
     private Car car;
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "nextOwner")
-    private Customer customer;
+    private Operator operator;
 }

@@ -2,7 +2,7 @@ package com.sda.carDealer.service;
 
 import com.sda.carDealer.model.Buy;
 import com.sda.carDealer.model.Car;
-import com.sda.carDealer.model.Customer;
+import com.sda.carDealer.model.Operator;
 import com.sda.carDealer.model.Sell;
 import com.sda.carDealer.repository.BuyRepository;
 import com.sda.carDealer.repository.CarRepository;
@@ -36,7 +36,7 @@ public class CarService implements CarServiceInterface{
     }
 
     @Override
-    public List<Customer> setNewOwners() {
+    public List<Operator> setNewOwners() {
         return null;
     }
 
@@ -87,8 +87,8 @@ public class CarService implements CarServiceInterface{
     }
 
     @Override
-    public void addNewCar(Customer customer, Car newCar) {
-        customerRepository.save(customer);
+    public void addNewCar(Operator operator, Car newCar) {
+        customerRepository.save(operator);
         carRepository.save(newCar);
     }
 

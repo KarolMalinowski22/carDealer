@@ -1,6 +1,6 @@
 package com.sda.carDealer.service;
 
-import com.sda.carDealer.model.Customer;
+import com.sda.carDealer.model.Operator;
 import com.sda.carDealer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,38 +19,38 @@ public class CustomerService implements CustomerServiceInterface {
     private CustomerRepository customerRepository;
 
     @Override
-    public Customer addNewCustomer(Customer customer) {
-        for (Customer c : getAll()) {
-            if (c.equals(customer)) {
+    public Operator addNewCustomer(Operator operator) {
+        for (Operator c : getAll()) {
+            if (c.equals(operator)) {
                 return c;
             }
         }
-        customerRepository.save(customer);
-        return customer;
+        customerRepository.save(operator);
+        return operator;
     }
 
     @Override
-    public List<Customer> getAll() {
+    public List<Operator> getAll() {
         return customerRepository.findAll();
     }
 
     @Override
-    public Page<Customer> getAllPaginated(Pageable pageable) {
+    public Page<Operator> getAllPaginated(Pageable pageable) {
         int pageSize = pageable.getPageSize();
         int pageNumber = pageable.getPageNumber();
-        List<Customer> allCustomers = getAll();
-        List<Customer> customersListPage;
+        List<Operator> allOperators = getAll();
+        List<Operator> customersListPage;
         int startIndex = pageNumber * pageSize;
-        if (startIndex > allCustomers.size()) {
+        if (startIndex > allOperators.size()) {
             customersListPage = Collections.emptyList();
         }else{
-            customersListPage = allCustomers.subList(startIndex, Math.min(startIndex + pageSize, allCustomers.size()));
+            customersListPage = allOperators.subList(startIndex, Math.min(startIndex + pageSize, allOperators.size()));
         }
-        return new PageImpl<Customer>(customersListPage, PageRequest.of(pageNumber, pageSize), allCustomers.size());
+        return new PageImpl<Operator>(customersListPage, PageRequest.of(pageNumber, pageSize), allOperators.size());
     }
 
     @Override
-    public Optional<Customer> getById(Long id) {
+    public Optional<Operator> getById(Long id) {
         return customerRepository.findById(id);
     }
 }

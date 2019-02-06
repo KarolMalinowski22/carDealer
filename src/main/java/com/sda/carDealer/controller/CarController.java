@@ -2,9 +2,8 @@ package com.sda.carDealer.controller;
 
 import com.sda.carDealer.model.Buy;
 import com.sda.carDealer.model.Car;
-import com.sda.carDealer.model.Customer;
+import com.sda.carDealer.model.Operator;
 import com.sda.carDealer.model.Sell;
-import com.sda.carDealer.repository.SellRepository;
 import com.sda.carDealer.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +27,6 @@ import java.util.stream.IntStream;
 @Controller
 //@RequestMapping("/cars")
 public class CarController {
-    private final Long shopId = 1L;
     @Autowired
     private CarServiceInterface carService;
     @Autowired
@@ -37,13 +35,16 @@ public class CarController {
     private SellServiceInterface sellService;
     @Autowired
     private CustomerServiceInterface customerService;
+    private Operator shop;
+    private Integer pageSize = 10;
+
 
     @RequestMapping()
     public String showAll(Model model,
                           @RequestParam("page") Optional<Integer> page,
                           @RequestParam("size") Optional<Integer> size) {
         Integer currentPage = page.orElse(1);
-        Integer currentSize = size.orElse(5);
+        Integer currentSize = size.orElse(pageSize);
         Page<Car> carsPage = carService.getAllAvailablePaginated(PageRequest.of(currentPage - 1, currentSize));
         model.addAttribute("carsPage", carsPage);
         Integer totalPages = carsPage.getTotalPages();
@@ -56,7 +57,7 @@ public class CarController {
 
     @RequestMapping("/addCar")
     public String addCarForm(Model model) {
-        model.addAttribute("customer", new Customer());
+        model.addAttribute("customer", new Operator());
         model.addAttribute("newCar", new Car());
         return "addCarForm";
     }
@@ -64,26 +65,26 @@ public class CarController {
     @PostMapping("/addCar")
     public String addCar(@Valid @ModelAttribute("newCar") Car newCar,
                          BindingResult bindingResultCar,
-                         @ModelAttribute("owner") Customer customer,
+                         @ModelAttribute("owner") Operator operator,
                          BindingResult bindingResultCustomer,
                          Model model) {
         if (bindingResultCar.hasErrors() || bindingResultCustomer.hasErrors()) {
-            model.addAttribute("customer", new Customer());
+            model.addAttribute("customer", new Operator());
             model.addAttribute("newCar", new Car());
             return "addCarForm";
         }
-        customer = customerService.addNewCustomer(customer);
-        if (newCar.getCustomers() == null) {
-            newCar.setCustomers(new ArrayList<>());
+        operator = customerService.addNewCustomer(operator);
+        if (newCar.getOperators() == null) {
+            newCar.setOperators(new ArrayList<>());
         }
-        newCar.getCustomers().add(customer);
-        carService.addNewCar(customer, newCar);
+        newCar.getOperators().add(operator);
+        carService.addNewCar(operator, newCar);
         return "redirect:/";
     }
 
     @RequestMapping("/buyForm")
     public String buyCarForm(Model model) {
-        model.addAttribute("customer", new Customer());
+        model.addAttribute("customer", new Operator());
         model.addAttribute("newCar", new Car());
         return "buyCarForm";
     }
@@ -92,18 +93,18 @@ public class CarController {
     public String buyCar(@Valid @ModelAttribute("newCar") Car newCar,
                          BindingResult bindingResult,
                          @ModelAttribute("price") String priceString,
-                         @ModelAttribute("owner") Customer customer,
+                         @ModelAttribute("owner") Operator operator,
                          Model model) {
         ///if the car has been sold before
         if (sellService.getAllSell().stream().map(c -> c.getCar().getVin()).collect(Collectors.toList()).contains(newCar.getVin())) {
             model.addAttribute("hasBeenSoldBefore", "Ten samochód został już u nas sprzedany!");
-            model.addAttribute("customer", new Customer());
+            model.addAttribute("customer", new Operator());
             model.addAttribute("newCar", new Car());
             return "buyCarForm";
         }
-        if (newCar.getCustomers().size() > 0) {
+        if (newCar.getOperators().size() > 0) {
             ///if car has more than one owner
-            if (carService.findById(newCar.getId()).get().getCustomers().size() > 1) {
+            if (carService.findById(newCar.getId()).get().getOperators().size() > 1) {
                 model.addAttribute("toManyOwners", "Aby kupić samochód, sprzedający musi być jedynym właścicielem pojazdu.");
                 return "buyCarForm";
             }
@@ -115,12 +116,12 @@ public class CarController {
         buy.setCar(newCar);
         buy.setDate(Timestamp.valueOf(LocalDateTime.now()));
         buy.setPrice(new BigDecimal(priceString));
-        buy.setCustomer(customer);
+        buy.setOperator(operator);
         //todo: Write test
 
         buyService.createNewBuy(buy);
         if (newCar != null) {
-            carService.addNewCar(customer, newCar);
+            carService.addNewCar(operator, newCar);
         }
         return "redirect:/";
     }
@@ -142,19 +143,22 @@ public class CarController {
             model.addAttribute("newCar", car);
             return "buyCarPreparedForm";
         }
-        if (carService.findById(carId).get().getCustomers().size() > 1) {
+        if (carService.findById(carId).get().getOperators().size() > 1) {
             model.addAttribute("toManyOwners", "Aby kupić samochód, sprzedający musi być jedynym właścicielem pojazdu.");
             return "buyCarPreparedForm";
+        }
+        if(shop == null){
+            shop = customerService.getById(1L).get();
         }
         Buy buy = new Buy();
         buy.setPrice(new BigDecimal(price));
         buy.setDate(Timestamp.valueOf(LocalDateTime.now()));
         buy.setCar(car);
-        buy.setCustomer(car.getCustomers().get(0));
+        buy.setOperator(car.getOperators().get(0));
         buyService.createNewBuy(buy);
-        ArrayList<Customer> customers = new ArrayList<>();
-        customers.add(customerService.getById(shopId).get());
-        car.setCustomers(customers);
+        ArrayList<Operator> operators = new ArrayList<>();
+        operators.add(shop);
+        car.setOperators(operators);
         carService.saveCar(car);
         return "redirect:/";
     }
@@ -172,7 +176,7 @@ public class CarController {
             Car car = carOptional.get();
             model.addAttribute("car", car);
             model.addAttribute("sell", new Sell());
-            model.addAttribute("customer", new Customer());
+            model.addAttribute("customer", new Operator());
         }
         return "sellCarForm";
     }
@@ -180,7 +184,7 @@ public class CarController {
     @PostMapping("/{carId}/sell")
     public String sellCar(@Valid @ModelAttribute("sell") Sell sell,
                           BindingResult bindingResult,
-                          @ModelAttribute("customer") Customer customer,
+                          @ModelAttribute("customer") Operator operator,
                           @PathVariable("carId") Long carId,
                           Model model) {
 
@@ -190,18 +194,18 @@ public class CarController {
             model.addAttribute("car", car);
             return "sellCarForm";
         }
-        for(Customer c : customerService.getAll()){
-            if(c.equals(customer)){
-                customer = c;
+        for(Operator c : customerService.getAll()){
+            if(c.equals(operator)){
+                operator = c;
                 break;
             }
         }
         sell.setCar(car);
         sell.setDate(Timestamp.valueOf(LocalDateTime.now()));
-        sell.setCustomer(customer);
+        sell.setOperator(operator);
         sellService.createNewSell(sell);
-        car.getCustomers().clear();
-        car.getCustomers().add(customer);
+        car.getOperators().clear();
+        car.getOperators().add(operator);
         carService.saveCar(car);
         return "redirect:/cars";
     }

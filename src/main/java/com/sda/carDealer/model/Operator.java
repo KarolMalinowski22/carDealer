@@ -9,8 +9,8 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@Entity
-public class Customer {
+@Entity(name = "operators")
+public class Operator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,17 +20,17 @@ public class Customer {
     private String lastName;
     @Column(name = "id_card_number")
     private String idCardNumber;
-    @ManyToMany(mappedBy = "customers")
+    @ManyToMany(mappedBy = "operators")
     private List<Car> cars;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return Objects.equals(firstName, customer.firstName) &&
-                Objects.equals(lastName, customer.lastName) &&
-                Objects.equals(idCardNumber, customer.idCardNumber);
+        Operator operator = (Operator) o;
+        return Objects.equals(firstName, operator.firstName) &&
+                Objects.equals(lastName, operator.lastName) &&
+                Objects.equals(idCardNumber, operator.idCardNumber);
     }
 
 }

@@ -25,21 +25,21 @@
 <body>
 <div class="menu"><h2>Menu</h2>
     <a href="/"><img alt="strona główna" src="https://dabuttonfactory.com/button.png?t=Strona+g%C5%82%C3%B3wna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
-<form th:object="${customer}" th:action="@{/customerRegistration}" method="post">
+<form th:object="${operator}" th:action="@{/customerRegistration}" method="post">
     <table>
         <tr>
             <th>Dane klienta:</th>
         </tr>
         <tr>
-            <td>Imię <input type="text" th:field="${customer.firstName}" required pattern=".*\S+.*"
+            <td>Imię <input type="text" th:field="${operator.firstName}" required pattern=".*\S+.*"
                             title="This field is required"></td>
         </tr>
         <tr>
-            <td>Nazwisko <input type="text" th:field="${customer.lastName}" required pattern=".*\S+.*"
+            <td>Nazwisko <input type="text" th:field="${operator.lastName}" required pattern=".*\S+.*"
                                 title="This field is required"></td>
         </tr>
         <tr>
-            <td>Numer dowodu osobistego &nbsp;<input type="text" th:field="${customer.idCardNumber}" required
+            <td>Numer dowodu osobistego &nbsp;<input type="text" th:field="${operator.idCardNumber}" required
                                                pattern=".*\S+.*"
                                                title="This field is required"></td>
         </tr>

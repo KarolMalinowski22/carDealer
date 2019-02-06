@@ -52,7 +52,7 @@ public class Car {
     @JoinTable(name="ownership",
     joinColumns = @JoinColumn(name = "carId"),
     inverseJoinColumns = @JoinColumn(name = "customerId"))
-    private List<Customer> customers;
+    private List<Operator> operators;
     @Column(name = "not_damaged")
     private Boolean isNotDamaged;
 

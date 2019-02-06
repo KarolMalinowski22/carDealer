@@ -4,6 +4,7 @@ import com.sda.carDealer.model.Buy;
 import com.sda.carDealer.model.Car;
 import com.sda.carDealer.model.Sell;
 import com.sda.carDealer.service.BuyServiceInterface;
+import com.sda.carDealer.service.ReportServiceInterface;
 import com.sda.carDealer.service.SellServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,21 +25,13 @@ public class ReportsController {
     private BuyServiceInterface buyService;
     @Autowired
     private SellServiceInterface sellService;
+    @Autowired
+    private ReportServiceInterface reportService;
     @GetMapping("/sellReport")
     public String showSellReports(Model model){
-        Map<Sell, BigDecimal> profit = new HashMap<>();
         List<Sell> allSell = sellService.getAllSell();
-        for (Sell sell :
-                allSell) {
-            Car car = sell.getCar();
-            if(car.getCustomers().get(0).getId() == 1){
-                profit.put(sell, calculateProfit(buyService.getBuyByCar(car).get(), sell));
-            }else {
-                profit.put(sell, calculateProfitForeignCar(sell));
-            }
-        }
         model.addAttribute("sells", allSell);
-        model.addAttribute("profitMap", profit);
+        model.addAttribute("profitMap", reportService.getProfit(allSell));
         return "sellReport";
     }
 
@@ -48,10 +41,5 @@ public class ReportsController {
         return "buyReport";
     }
 
-    private BigDecimal calculateProfit(Buy buy, Sell sell) {
-        return buy.getPrice().divide(sell.getPrice());
-    }
-    private BigDecimal calculateProfitForeignCar(Sell sell){
-        return sell.getPrice().multiply(BigDecimal.valueOf(0.2));
-    }
+
 }

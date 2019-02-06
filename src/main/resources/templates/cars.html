@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Komis samochodowy</title>
@@ -24,7 +25,7 @@
             border: double black 2px;
             grid-column-start: 1;
             grid-column-end: 2;
-            width: 40%;
+            width: 152px;
             padding: 5px;
         }
 
@@ -62,11 +63,12 @@
             grid-column-start: 2;
         }
 
-        .pagesNumbers{
+        .pagesNumbers {
             display: inline-flex;
 
         }
-        .pagesNumbers p, .pagesNumbers a{
+
+        .pagesNumbers p, .pagesNumbers a {
         }
     </style>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
@@ -81,14 +83,18 @@
     <h2 style="margin-right:20px">Wszystkie samochody</h2>
     <!--Top Menu-->
     <div class="topMenu">
-        <div><a th:href="@{/}"><img alt="Pokaż wszystkie samochody"
-                                    src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+samochody&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+        <div class="commonMenu">
+            <div><a th:href="@{/}"><img alt="Pokaż wszystkie samochody"
+                                        src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+samochody&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+            </div>
         </div>
-        <div><a th:href="@{/customers}"><img alt="Pokaż wszystkich klientów"
-                                             src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+klient%C3%B3w&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
-        </div>
-        <div><a th:href="@{/reports/buyReport}"><img alt="Pokaż raporty"
-                                                     src="https://dabuttonfactory.com/button.png?t=Raporty&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+        <div class="employeeMenu" sec:authorize="hasAuthority('ROLE_OWNER')">
+            <div><a th:href="@{/customers}"><img alt="Pokaż wszystkich klientów"
+                                                 src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+klient%C3%B3w&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+            </div>
+            <div><a th:href="@{/reports/buyReport}"><img alt="Pokaż raporty"
+                                                         src="https://dabuttonfactory.com/button.png?t=Raporty&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+            </div>
         </div>
     </div>
     <!--Side menu-->
@@ -124,11 +130,12 @@
                 <td th:text="${car.mileage}"></td>
                 <td th:text="${car.fuelType}"></td>
                 <td><a th:if="${car.isNotDamaged}" th:href="@{/{carId}/sell (carId=${car.id})}"><img alt="sprzedaj"
-                                                                         src="https://dabuttonfactory.com/button.png?t=sprzedaj&f=Calibri-Bold&ts=20&tc=fff&tshs=1&tshc=000&w=100&h=25&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
-                    <img th:unless="${car.isNotDamaged}" th:href="@{/{carId}/sell (carId=${car.id})}" title="nie wolno" alt="uszkodzony"
+                                                                                                     src="https://dabuttonfactory.com/button.png?t=sprzedaj&f=Calibri-Bold&ts=20&tc=fff&tshs=1&tshc=000&w=100&h=25&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+                    <img th:unless="${car.isNotDamaged}" th:href="@{/{carId}/sell (carId=${car.id})}" title="nie wolno"
+                         alt="uszkodzony"
                          src="https://dabuttonfactory.com/button.png?t=Uszkodzony&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=100&h=25&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763">
                 </td>
-                <td th:if="${car.customers.get(0).id != 1}"><a th:href="@{/{carId}/buy (carId=${car.id})}"><img
+                <td th:if="${car.operators.get(0).id != 1}"><a th:href="@{/{carId}/buy (carId=${car.id})}"><img
                         alt="kup"
                         src="https://dabuttonfactory.com/button.png?t=kup&f=Calibri-Bold&ts=20&tc=fff&tshs=1&tshc=000&w=100&h=25&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
                 </td>

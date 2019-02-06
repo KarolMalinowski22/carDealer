@@ -1,6 +1,6 @@
 package com.sda.carDealer.controller;
 
-import com.sda.carDealer.model.Customer;
+import com.sda.carDealer.model.Operator;
 import com.sda.carDealer.service.CustomerServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,14 +21,15 @@ import java.util.stream.IntStream;
 public class CustomerController {
     @Autowired
     private CustomerServiceInterface customerService;
+    private Integer pageSize;
 
-    @RequestMapping("customers")
+    @RequestMapping("/customers")
     public String customers(Model model,
                             @RequestParam("page")Optional<Integer> pageOptional,
                             @RequestParam("size") Optional<Integer> sizeOptional) {
-        Integer size = sizeOptional.orElse(5);
+        Integer size = sizeOptional.orElse(pageSize);
         Integer page = pageOptional.orElse(1);
-        Page<Customer> customersPage = customerService.getAllPaginated(PageRequest.of(page - 1, size));
+        Page<Operator> customersPage = customerService.getAllPaginated(PageRequest.of(page - 1, size));
         model.addAttribute("customersPage", customersPage);
         Integer totalPages = customersPage.getTotalPages();
         if(totalPages > 0){
@@ -38,21 +39,21 @@ public class CustomerController {
         return "customers";
     }
 
-    @RequestMapping("customerRegistration")
+    @RequestMapping("/customerRegistration")
     public String customerRegistrationForm(Model model) {
-        model.addAttribute("customer", new Customer());
+        model.addAttribute("customer", new Operator());
         return "customerRegistrationForm";
     }
 
-    @PostMapping("customerRegistration")
-    public String customerRegistrationForm(@ModelAttribute("customer") Customer customer, Model model) {
-        for (Customer customerRegistered : customerService.getAll()) {
-            if (customerRegistered.equals(customer)) {
+    @PostMapping("/customerRegistration")
+    public String customerRegistrationForm(@ModelAttribute("customer") Operator operator, Model model) {
+        for (Operator operatorRegistered : customerService.getAll()) {
+            if (operatorRegistered.equals(operator)) {
                 model.addAttribute("duplicate", "Już istnieje klient o takich danych");
                 return "customerRegistrationForm";
             }
         }
-        customerService.addNewCustomer(customer);
+        customerService.addNewCustomer(operator);
         return "redirect:/customers";
     }
 }

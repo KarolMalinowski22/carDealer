@@ -52,7 +52,7 @@
             <td th:text="${sell.date}"></td>
             <td th:text="${sell.car.manufacturer} + ' ' + ' ' + ${sell.car.model}"></td>
             <td th:text="${sell.price}"></td>
-            <td th:text="${sell.customer.firstName} + ' ' + ' ' + ${sell.customer.lastName}"></td>
+            <td th:text="${sell.operator.firstName} + ' ' + ' ' + ${sell.operator.lastName}"></td>
             <td th:text="${profitMap.get(sell)} + ' ' + 'zł'"></td>
         </tr>
     </table>

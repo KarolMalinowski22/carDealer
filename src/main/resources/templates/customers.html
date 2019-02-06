@@ -78,7 +78,7 @@
     <!--Top Menu-->
     <div class="topMenu">
         <div><a th:href="@{/}"><img alt="Pokaż wszystkie samochody" src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+samochody&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
-        <div><a th:href="@{/customers}"><img alt="Pokaż wszystkich klientów" src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+klient%C3%B3w&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
+        <div><a th:href="@{/operators}"><img alt="Pokaż wszystkich klientów" src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+klient%C3%B3w&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
     </div>
     <!--Side menu-->
     <div class="menu">
@@ -99,17 +99,17 @@
                 <th>Nazwosko</th>
                 <th>Numer dowodu osobistego</th>
             </tr>
-            <tr th:each="customer : ${customersPage}">
-                <td th:text="${customer.id}"></td>
-                <td th:text="${customer.firstName}"></td>
-                <td th:text="${customer.lastName}"></td>
-                <td th:text="${customer.idCardNumber}"></td>
+            <tr th:each="operator : ${customersPage}">
+                <td th:text="${operator.id}"></td>
+                <td th:text="${operator.firstName}"></td>
+                <td th:text="${operator.lastName}"></td>
+                <td th:text="${operator.idCardNumber}"></td>
             </tr>
         </table>
     </div>
     <div class="pagesNumbersBox">
         <div th:if="${customersPage.totalPages > 0}" th:each="pageNumber : ${pagesNumbersList}" class="pagesNumbers">
-            <a th:href="@{/customers(size=${customersPage.size}, page=${pageNumber})}"
+            <a th:href="@{/operators(size=${customersPage.size}, page=${pageNumber})}"
                th:text="${pageNumber}"
                th:unless="${pageNumber == customersPage.getNumber() + 1}"></a>
             <p th:if="${pageNumber == customersPage.getNumber() + 1}" th:text="${pageNumber}"></p>
