@@ -1,5 +1,6 @@
 package com.sda.carDealer.controller;
 
+import com.sda.carDealer.controller.utilities.CurrentUser;
 import com.sda.carDealer.model.*;
 import com.sda.carDealer.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +42,7 @@ public class CarController {
     public String showAll(Model model,
                           @RequestParam("page") Optional<Integer> page,
                           @RequestParam("size") Optional<Integer> size) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof AppUserDetails){
-            String username = ((AppUserDetails) principal).getUsername();
-            model.addAttribute("userName", username);
-        }
+        model.addAttribute("userName", CurrentUser.getUsername());
         Integer currentPage = page.orElse(1);
         Integer currentSize = size.orElse(pageSize);
         Page<Car> carsPage = carService.getAllAvailablePaginated(PageRequest.of(currentPage - 1, currentSize));

@@ -5,12 +5,19 @@ import com.sda.carDealer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService implements UserServiceInterface {
     @Autowired
     private UserRepository userRepository;
+
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
     /**
      * Checks if conditions to create new user are met and adds the user to database.
@@ -23,6 +30,8 @@ public class UserService implements UserServiceInterface {
         return userRepository.save(user);
     }
 
+
+
     @Override
     public User getUserByUserName(String login) {
         Optional<User> firstByLoginOpt = userRepository.findFirstByLogin(login);
@@ -34,8 +43,8 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
     }
 
     /**
@@ -62,5 +71,10 @@ public class UserService implements UserServiceInterface {
         }else{
             return false;
         }
+    }
+
+    @Override
+    public User updateUser(User user) {
+        return userRepository.save(user);
     }
 }
