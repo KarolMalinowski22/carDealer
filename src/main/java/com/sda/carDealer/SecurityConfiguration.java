@@ -15,6 +15,10 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private final String employee = "EMPLOYEE";
+    private final String owner = "OWNER";
+    private final String admin = "ADMIN";
+    private final String customer = "CUSTOMER";
     @Autowired
     private UserDetailsService appUserDetailsService;
     @Bean
@@ -27,8 +31,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //super.configure(http);
-        http.authorizeRequests().antMatchers("/reports/sellReport").hasRole("OWNER").anyRequest().permitAll().and().formLogin().defaultSuccessUrl("/").
-                and().logout().logoutSuccessUrl("/login").and().httpBasic();
+        http.authorizeRequests().antMatchers("/reports/").hasAnyRole(owner, admin)
+                .antMatchers("/reports/*").hasAnyRole(owner, admin)
+                .antMatchers("/addCar").hasAnyRole(owner, admin, employee)
+                .antMatchers("/buyForm").hasAnyRole(owner, admin, employee)
+                .antMatchers("/buy").hasAnyRole(owner, admin, employee)
+                .antMatchers("/**/buy").hasAnyRole(owner, admin, employee)
+                .antMatchers("/buyPrepared").hasAnyRole(owner, admin, employee)
+                .antMatchers("/**/delete").hasAnyRole(admin)
+                .antMatchers("/**/sell").hasAnyRole(owner, admin, employee)
+                .antMatchers("/operators").hasAnyRole(owner, admin, employee)
+                .antMatchers("/operatorRegistration").hasAnyRole(owner, admin, employee)
+                .anyRequest().permitAll()
+                .and().formLogin().defaultSuccessUrl("/")
+                .and().logout().logoutSuccessUrl("/").and().httpBasic();
     }
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {

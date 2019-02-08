@@ -5,6 +5,7 @@ import com.sda.carDealer.model.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,4 +13,6 @@ public interface BuyRepository extends JpaRepository<Buy, Long> {
     @Query("select c.id from Buy b inner join b.car c")
     List<Long> getAllCarsId();
     Optional<Buy> findByCar(Car car);
+
+    List<Buy> findAllByDateBetween(Timestamp from, Timestamp to);
 }

@@ -6,7 +6,7 @@ import com.sda.carDealer.model.Operator;
 import com.sda.carDealer.model.Sell;
 import com.sda.carDealer.repository.BuyRepository;
 import com.sda.carDealer.repository.CarRepository;
-import com.sda.carDealer.repository.CustomerRepository;
+import com.sda.carDealer.repository.OperatorRepository;
 import com.sda.carDealer.repository.SellRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +27,7 @@ public class CarService implements CarServiceInterface{
     @Autowired
     private BuyRepository buyRepository;
     @Autowired
-    private CustomerRepository customerRepository;
+    private OperatorRepository operatorRepository;
 
 
     @Override
@@ -88,7 +88,7 @@ public class CarService implements CarServiceInterface{
 
     @Override
     public void addNewCar(Operator operator, Car newCar) {
-        customerRepository.save(operator);
+        operatorRepository.save(operator);
         carRepository.save(newCar);
     }
 

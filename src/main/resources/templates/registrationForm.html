@@ -3,8 +3,8 @@
     <title>registration</title>
 </head>
 <body>
-<h1 th:text="#{label.form.title}">form</h1>
-<form th:action="@{/registration}" th:object="${user}" method="POST" enctype="utf8">
+<h1>Formularz rejestracyjny</h1>
+<form th:action="@{/register}" th:object="${user}" method="POST" enctype="utf8">
     <div>
         <label>email
             <input th:field="*{email}"/>
@@ -14,9 +14,9 @@
     </div>
     <div>
         <label>userName
-            <input th:field="*{userName}"/>
+            <input th:field="*{login}"/>
         </label>
-        <p th:each="error: ${#fields.errors('userName')}"
+        <p th:each="error: ${#fields.errors('login')}"
            th:text="${error}">Validation error</p>
     </div>
     <div>
@@ -29,6 +29,6 @@
     <button type="submit">Zarejestruj</button>
 </form>
 
-<a th:href="@{/login.html}">Zaloguj</a>
+<a th:href="@{/login}">Zaloguj</a>
 </body>
 </html>

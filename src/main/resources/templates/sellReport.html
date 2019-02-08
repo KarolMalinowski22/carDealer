@@ -8,14 +8,28 @@
             border: double black 2px;
             grid-column-start: 1;
             grid-column-end: 2;
-            width: 40%;
+            width: 150px;
             padding: 5px;
         }
-        body{
-            display: grid;
-            grid-template-columns: auto auto;
+
+        .topMenu {
+            grid-column-start: 2;
+            border: double black 2px;
+            padding: 5px;
+            display: table;
         }
-        .reportTable table, .reportTable  th, .reportTable td {
+
+        .topMenu div {
+            float: left;
+            margin: 5px;
+        }
+
+        body {
+            display: grid;
+            grid-template-columns: auto auto auto;
+        }
+
+        .reportTable table, .reportTable th, .reportTable td {
             border: black solid 1px;
             border-spacing: 0px;
             border-collapse: collapse;
@@ -27,18 +41,37 @@
 <div style="grid-column-start: 1; grid-column-end: 3">
     <h1 align="center">Raport sprzedaży</h1>
 </div>
+<!--Top Menu-->
+<div class="topMenu">
+    <div>
+
+        <div><a th:href="@{/reports/buyReport}"><img alt="Pokaż raporty"
+                                                     src="https://dabuttonfactory.com/button.png?t=Raporty&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+        </div>
+    </div>
+</div>
 <!--Side menu-->
 <div class="sideMenu">
     <h2>Menu</h2>
     <div>
-        <a th:href="@{/}"><img alt="strona główna" src="https://dabuttonfactory.com/button.png?t=Strona+g%C5%82%C3%B3wna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+        <a th:href="@{/}"><img alt="strona główna"
+                               src="https://dabuttonfactory.com/button.png?t=Strona+g%C5%82%C3%B3wna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
     </div>
     <div>
-        <a th:href="@{/reports/buyReport}"><img alt="raport kupna" src="https://dabuttonfactory.com/button.png?t=Raport+kupna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+        <a th:href="@{/reports/buyReport}"><img alt="raport kupna"
+                                                src="https://dabuttonfactory.com/button.png?t=Raport+kupna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
     </div>
 </div>
 <div class="reportTable">
-    <table>
+    <div>
+        <h2>Na miesiąc:
+            <form th:action="@{/reports/sellReport}" method="post">
+                <input name="date" type="month" th:value="${#dates.format(date, 'yyyy-MM')}" pattern="[0-9]{4}-+[0-1]+[0-2]" title="yyyy-MM">
+                <input type="submit">
+            </form>
+        </h2>
+    </div>
+    <table th:unless="${sells.isEmpty()}">
         <tr>
             <th>ID</th>
             <th>Data</th>
@@ -51,11 +84,12 @@
             <td th:text="${sell.id}"></td>
             <td th:text="${sell.date}"></td>
             <td th:text="${sell.car.manufacturer} + ' ' + ' ' + ${sell.car.model}"></td>
-            <td th:text="${sell.price}"></td>
+            <td th:text="${sell.price} + ' ' + 'zł'"></td>
             <td th:text="${sell.operator.firstName} + ' ' + ' ' + ${sell.operator.lastName}"></td>
             <td th:text="${profitMap.get(sell)} + ' ' + 'zł'"></td>
         </tr>
     </table>
+    <h2 th:if="${sells.isEmpty()}">Pusto,<br> <h3>nie ma żadnych zakupów na ten miesiąc.</h3></h2>
 </div>
 </body>
 </html>

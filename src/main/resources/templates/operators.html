@@ -78,20 +78,16 @@
     <!--Top Menu-->
     <div class="topMenu">
         <div><a th:href="@{/}"><img alt="Pokaż wszystkie samochody" src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+samochody&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
-        <div><a th:href="@{/operators}"><img alt="Pokaż wszystkich klientów" src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+klient%C3%B3w&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
     </div>
     <!--Side menu-->
     <div class="menu">
         <h2>Menu</h2>
-        <div ><a th:href="@{/buyForm}"><img alt="kup samochód"
-                                            src="https://dabuttonfactory.com/button.png?t=Kup+samoch%C3%B3d&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
-        </div>
         <div>
-            <a th:href="@{/customerRegistration}"><img alt="kup samochód"
+            <a th:href="@{/operatorRegistration}"><img alt="kup samochód"
                                                        src="https://dabuttonfactory.com/button.png?t=Zarejestruj+klienta&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
         </div>
     </div>
-    <div class="customersList" th:unless="${customersPage.isEmpty()}">
+    <div class="customersList" th:unless="${operatorsPage.isEmpty()}">
         <table cellspacing="0">
             <tr>
                 <th>ID</th>
@@ -99,7 +95,7 @@
                 <th>Nazwosko</th>
                 <th>Numer dowodu osobistego</th>
             </tr>
-            <tr th:each="operator : ${customersPage}">
+            <tr th:each="operator : ${operatorsPage}">
                 <td th:text="${operator.id}"></td>
                 <td th:text="${operator.firstName}"></td>
                 <td th:text="${operator.lastName}"></td>
@@ -108,15 +104,15 @@
         </table>
     </div>
     <div class="pagesNumbersBox">
-        <div th:if="${customersPage.totalPages > 0}" th:each="pageNumber : ${pagesNumbersList}" class="pagesNumbers">
-            <a th:href="@{/operators(size=${customersPage.size}, page=${pageNumber})}"
+        <div th:if="${operatorsPage.totalPages > 0}" th:each="pageNumber : ${pagesNumbersList}" class="pagesNumbers">
+            <a th:href="@{/operators(size=${operatorsPage.size}, page=${pageNumber})}"
                th:text="${pageNumber}"
-               th:unless="${pageNumber == customersPage.getNumber() + 1}"></a>
-            <p th:if="${pageNumber == customersPage.getNumber() + 1}" th:text="${pageNumber}"></p>
+               th:unless="${pageNumber == operatorsPage.getNumber() + 1}"></a>
+            <p th:if="${pageNumber == operatorsPage.getNumber() + 1}" th:text="${pageNumber}"></p>
         </div>
     </div>
     <!--Jeśli nie ma klientów w bazie-->
-    <div th:if="${customersPage.isEmpty()}">Nie ma klientów. <br>Wyjdź z domu i poznaj kogoś. <br><a th:href="@{/customerRegistration}">Dodaj nowego klienta</a></div>
+    <div th:if="${operatorsPage.isEmpty()}">Nie ma klientów. <br>Wyjdź z domu i poznaj kogoś. <br><a th:href="@{/customerRegistration}">Dodaj nowego klienta</a></div>
 
 
 </div>

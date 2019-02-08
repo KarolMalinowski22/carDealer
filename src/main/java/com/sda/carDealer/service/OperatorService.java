@@ -1,7 +1,7 @@
 package com.sda.carDealer.service;
 
 import com.sda.carDealer.model.Operator;
-import com.sda.carDealer.repository.CustomerRepository;
+import com.sda.carDealer.repository.OperatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CustomerService implements CustomerServiceInterface {
+public class OperatorService implements OperatorServiceInterface {
     @Autowired
-    private CustomerRepository customerRepository;
+    private OperatorRepository operatorRepository;
 
     @Override
     public Operator addNewCustomer(Operator operator) {
@@ -25,13 +25,13 @@ public class CustomerService implements CustomerServiceInterface {
                 return c;
             }
         }
-        customerRepository.save(operator);
+        operatorRepository.save(operator);
         return operator;
     }
 
     @Override
     public List<Operator> getAll() {
-        return customerRepository.findAll();
+        return operatorRepository.findAll();
     }
 
     @Override
@@ -46,11 +46,11 @@ public class CustomerService implements CustomerServiceInterface {
         }else{
             customersListPage = allOperators.subList(startIndex, Math.min(startIndex + pageSize, allOperators.size()));
         }
-        return new PageImpl<Operator>(customersListPage, PageRequest.of(pageNumber, pageSize), allOperators.size());
+        return new PageImpl<>(customersListPage, PageRequest.of(pageNumber, pageSize), allOperators.size());
     }
 
     @Override
     public Optional<Operator> getById(Long id) {
-        return customerRepository.findById(id);
+        return operatorRepository.findById(id);
     }
 }

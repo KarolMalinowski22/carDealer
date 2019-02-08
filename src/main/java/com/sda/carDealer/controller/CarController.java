@@ -1,13 +1,11 @@
 package com.sda.carDealer.controller;
 
-import com.sda.carDealer.model.Buy;
-import com.sda.carDealer.model.Car;
-import com.sda.carDealer.model.Operator;
-import com.sda.carDealer.model.Sell;
+import com.sda.carDealer.model.*;
 import com.sda.carDealer.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,15 +32,20 @@ public class CarController {
     @Autowired
     private SellServiceInterface sellService;
     @Autowired
-    private CustomerServiceInterface customerService;
+    private OperatorServiceInterface customerService;
     private Operator shop;
     private Integer pageSize = 10;
 
 
-    @RequestMapping()
+    @RequestMapping("/")
     public String showAll(Model model,
                           @RequestParam("page") Optional<Integer> page,
                           @RequestParam("size") Optional<Integer> size) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof AppUserDetails){
+            String username = ((AppUserDetails) principal).getUsername();
+            model.addAttribute("userName", username);
+        }
         Integer currentPage = page.orElse(1);
         Integer currentSize = size.orElse(pageSize);
         Page<Car> carsPage = carService.getAllAvailablePaginated(PageRequest.of(currentPage - 1, currentSize));
@@ -57,7 +60,7 @@ public class CarController {
 
     @RequestMapping("/addCar")
     public String addCarForm(Model model) {
-        model.addAttribute("customer", new Operator());
+        model.addAttribute("operator", new Operator());
         model.addAttribute("newCar", new Car());
         return "addCarForm";
     }
@@ -69,7 +72,7 @@ public class CarController {
                          BindingResult bindingResultCustomer,
                          Model model) {
         if (bindingResultCar.hasErrors() || bindingResultCustomer.hasErrors()) {
-            model.addAttribute("customer", new Operator());
+            model.addAttribute("operator", new Operator());
             model.addAttribute("newCar", new Car());
             return "addCarForm";
         }
@@ -84,7 +87,7 @@ public class CarController {
 
     @RequestMapping("/buyForm")
     public String buyCarForm(Model model) {
-        model.addAttribute("customer", new Operator());
+        model.addAttribute("operator", new Operator());
         model.addAttribute("newCar", new Car());
         return "buyCarForm";
     }
@@ -98,7 +101,7 @@ public class CarController {
         ///if the car has been sold before
         if (sellService.getAllSell().stream().map(c -> c.getCar().getVin()).collect(Collectors.toList()).contains(newCar.getVin())) {
             model.addAttribute("hasBeenSoldBefore", "Ten samochód został już u nas sprzedany!");
-            model.addAttribute("customer", new Operator());
+            model.addAttribute("operator", new Operator());
             model.addAttribute("newCar", new Car());
             return "buyCarForm";
         }

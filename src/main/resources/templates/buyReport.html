@@ -11,6 +11,17 @@
             width: 40%;
             padding: 5px;
         }
+        .topMenu {
+            grid-column-start: 2;
+            border: double black 2px;
+            padding: 5px;
+            display: table;
+        }
+
+        .topMenu div {
+            float: left;
+            margin: 5px;
+        }
         body{
             display: grid;
             grid-template-columns: auto auto;
@@ -27,6 +38,15 @@
 <div style="grid-column-start: 1; grid-column-end: 3">
     <h1 align="center">Raport kupna</h1>
 </div>
+<!--Top Menu-->
+<div class="topMenu">
+    <div>
+
+        <div><a th:href="@{/reports/buyReport}"><img alt="Pokaż raporty"
+                                                     src="https://dabuttonfactory.com/button.png?t=Raporty&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+        </div>
+    </div>
+</div>
 <!--Side menu-->
 <div class="sideMenu">
     <h2>Menu</h2>
@@ -38,7 +58,15 @@
     </div>
 </div>
 <div class="reportTable">
-    <table>
+    <div>
+        <h2>Na miesiąc:
+            <form th:action="@{/reports/buyReport}" method="post">
+                <input name="date" type="month" th:value="${#dates.format(date, 'yyyy-MM')}" pattern="[0-9]{4}-+[0-1]+[0-2]" title="yyyy-MM">
+                <input type="submit">
+            </form>
+        </h2>
+    </div>
+    <table th:unless="${buys.isEmpty()}">
         <tr>
             <th>ID</th>
             <th>Data</th>
@@ -54,6 +82,7 @@
             <td th:text="${buy.operator.firstName} + ' ' + ' ' + ${buy.operator.lastName}"></td>
         </tr>
     </table>
+    <h2 th:if="${buys.isEmpty()}">Pusto,<br> <h3>nie ma żadnych zakupów na ten miesiąc.</h3></h2>
 </div>
 </body>
 </html>

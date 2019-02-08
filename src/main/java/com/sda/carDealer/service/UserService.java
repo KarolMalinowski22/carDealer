@@ -5,6 +5,8 @@ import com.sda.carDealer.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService implements UserServiceInterface {
     @Autowired
@@ -23,7 +25,12 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public User getUserByUserName(String login) {
-        return userRepository.findFirstByLogin(login);
+        Optional<User> firstByLoginOpt = userRepository.findFirstByLogin(login);
+        if(firstByLoginOpt.isPresent()){
+            return firstByLoginOpt.get();
+        }else {
+            return null;
+        }
     }
 
     @Override
@@ -36,8 +43,12 @@ public class UserService implements UserServiceInterface {
      */
     @Override
     public boolean emailExists(String email) {
-        User firstByEmail = userRepository.findFirstByEmail(email).get();
-        return firstByEmail != null;
+        Optional<User> firstByEmailOpt = userRepository.findFirstByEmail(email);
+        if(firstByEmailOpt.isPresent()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -45,7 +56,11 @@ public class UserService implements UserServiceInterface {
      */
     @Override
     public boolean loginExists(String login) {
-        User firstByLogin = userRepository.findFirstByLogin(login);
-        return firstByLogin != null;
+        Optional<User> firstByLoginOpt = userRepository.findFirstByLogin(login);
+        if(firstByLoginOpt.isPresent()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

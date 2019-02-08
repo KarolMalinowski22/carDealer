@@ -70,11 +70,24 @@
 
         .pagesNumbers p, .pagesNumbers a {
         }
+        .userMenu{
+            border: black solid 1px;
+            position: fixed;
+            top:0px;
+            right:0px;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 
 </head>
 <body>
+<div class="userMenu">
+    <h3 th:unless="${userName==null}" style="margin:5px;" th:text="'Zalogowany jako:&nbsp;' + ${userName}"></h3>
+    <a th:unless="${userName==null}" style="margin-left: 20px;" href="/logout"><img alt="wyloguj" src="https://dabuttonfactory.com/button.png?t=wyloguj&f=Calibri-Bold&ts=17&tc=fff&tshs=1&tshc=000&hp=20&vp=8&c=5&bgt=pyramid&bgc=3d85c6&ebgc=073763"></a>
+    <a th:if="${userName==null}" style="margin-left: 20px;" href="/login"><img alt="zaloguj" src="https://dabuttonfactory.com/button.png?t=zaloguj&f=Calibri-Bold&ts=17&tc=fff&tshs=1&tshc=000&hp=20&vp=8&c=5&bgt=pyramid&bgc=3d85c6&ebgc=073763"></a>
+    <a th:if="${userName==null}" style="margin-left: 20px;" th:href="@{/register}"><img alt="zarejestruj" src="https://dabuttonfactory.com/button.png?t=zarejestruj&f=Calibri-Bold&ts=17&tc=fff&tshs=1&tshc=000&hp=20&vp=8&c=5&bgt=pyramid&bgc=3d85c6&ebgc=073763"></a>
+
+</div>
 <div class="grid">
 
     <h1 class="title">TWÓJ KOMIS - ONLINE <img alt="car" class="logo"
@@ -84,12 +97,9 @@
     <!--Top Menu-->
     <div class="topMenu">
         <div class="commonMenu">
-            <div><a th:href="@{/}"><img alt="Pokaż wszystkie samochody"
-                                        src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+samochody&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
-            </div>
         </div>
-        <div class="employeeMenu" sec:authorize="hasAuthority('ROLE_OWNER')">
-            <div><a th:href="@{/customers}"><img alt="Pokaż wszystkich klientów"
+        <div class="employeeMenu" sec:authorize="hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN', 'ROLE_EMPLOYEE')">
+            <div><a th:href="@{/operators}"><img alt="Pokaż wszystkich klientów"
                                                  src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+klient%C3%B3w&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
             </div>
             <div><a th:href="@{/reports/buyReport}"><img alt="Pokaż raporty"
@@ -100,16 +110,18 @@
     <!--Side menu-->
     <div class="sideMenu">
         <h2>Menu</h2>
-        <div><a th:href="@{/buyForm}"><img alt="kup samochód"
-                                           src="https://dabuttonfactory.com/button.png?t=Kup+samoch%C3%B3d&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
-        </div>
-        <div>
-            <a th:href="@{/customerRegistration}"><img alt="zarejestruj użytkownika"
-                                                       src="https://dabuttonfactory.com/button.png?t=Zarejestruj+klienta&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
-        </div>
-        <div>
-            <a th:href="@{/addCar}"><img alt="dodaj samochód"
-                                         src="https://dabuttonfactory.com/button.png?t=Dodaj+samoch%C3%B3d&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+        <div sec:authorize="hasAnyRole('ROLE_OWNER', 'ROLE_ADMIN', 'ROLE_EMPLOYEE')">
+            <div><a th:href="@{/buyForm}"><img alt="kup samochód"
+                                               src="https://dabuttonfactory.com/button.png?t=Kup+samoch%C3%B3d&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+            </div>
+            <div>
+                <a th:href="@{/customerRegistration}"><img alt="zarejestruj użytkownika"
+                                                           src="https://dabuttonfactory.com/button.png?t=Zarejestruj+klienta&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+            </div>
+            <div>
+                <a th:href="@{/addCar}"><img alt="dodaj samochód"
+                                             src="https://dabuttonfactory.com/button.png?t=Dodaj+samoch%C3%B3d&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+            </div>
         </div>
     </div>
     <div class="carList" th:unless="${carsPage.isEmpty()}">

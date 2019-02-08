@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public interface CustomerServiceInterface {
+public interface OperatorServiceInterface {
     Operator addNewCustomer(Operator operator);
     List<Operator> getAll();
     Page<Operator> getAllPaginated(Pageable pageable);
