@@ -13,6 +13,8 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class SellService implements SellServiceInterface{
     @Autowired
@@ -23,18 +25,23 @@ public class SellService implements SellServiceInterface{
     }
 
     @Override
-    public void createNewSell(Sell sell) {
+    public void save(Sell sell) {
         sellRepository.save(sell);
     }
     @Override
     public List<Sell> getAllSellByMonth(LocalDateTime dateTime) {
         Timestamp from = Timestamp.valueOf(dateTime.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0));
         Timestamp to = Timestamp.valueOf(dateTime.plusMonths(1).withDayOfMonth(1).minusDays(1).withHour(23).withMinute(59).withSecond(59));
-        List<Sell> allByDateBetween = sellRepository.findAllByDateBetween(from, to);
+        List<Sell> allByDateBetween = sellRepository.findAllByDateBetweenAndCanceledFalse(from, to);
         if(allByDateBetween.size() > 0){
             return allByDateBetween;
         }else{
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public Optional<Sell> getById(Long id) {
+        return sellRepository.findById(id);
     }
 }

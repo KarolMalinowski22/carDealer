@@ -6,7 +6,6 @@ import com.sda.carDealer.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -53,6 +52,15 @@ public class CarController {
             model.addAttribute("pagesNumbersList", pagesNumbersList);
         }
         return "cars";
+    }
+
+    @RequestMapping("/{carId}/editCar")
+    public String updateCarForm(Model model, @PathVariable(name = "carId")Long carId){
+        if(shop == null){
+            shop = customerService.getById(1L).get();
+        }
+        model.addAttribute("car", carService.findById(carId).get());
+        return "editCarForm";
     }
 
     @RequestMapping("/addCar")
@@ -203,7 +211,7 @@ public class CarController {
         sell.setCar(car);
         sell.setDate(Timestamp.valueOf(LocalDateTime.now()));
         sell.setOperator(operator);
-        sellService.createNewSell(sell);
+        sellService.save(sell);
         car.getOperators().clear();
         car.getOperators().add(operator);
         carService.saveCar(car);

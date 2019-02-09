@@ -11,5 +11,5 @@ import java.util.List;
 public interface SellRepository extends JpaRepository<Sell, Long> {
     @Query("select c.id from Sell s inner join s.car c")
     List<Long> getAllCarsId();
-    List<Sell> findAllByDateBetween(Timestamp from, Timestamp to);
+    List<Sell> findAllByDateBetweenAndCanceledFalse(Timestamp from, Timestamp to);
 }

@@ -48,8 +48,8 @@
             border-collapse: collapse;
         }
 
-        .userList table, .carList th, .carList td {
-            border: 1px double black;
+        table, th, td {
+            border: black solid 1px;
             margin: 0px;
             padding: 5px;
             gap: 0;
@@ -105,9 +105,6 @@
             <div><a th:href="@{/reports/buyReport}"><img alt="Pokaż raporty"
                                                          src="https://dabuttonfactory.com/button.png?t=Raporty&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
             </div>
-            <div sec:authorize="hasRole('ROLE_ADMIN')">
-                <a th:href="@{/showUsers}"><img alt="Pokaż użytkowników" src="https://dabuttonfactory.com/button.png?t=Poka%C5%BC+u%C5%BCytkownik%C3%B3w&f=Calibri-Bold&ts=18&tc=fff&tshs=1&tshc=000&w=170&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
-            </div>
         </div>
     </div>
     <!--Side menu-->
@@ -142,7 +139,7 @@
                 <td th:if="${user.login == null}">brak loginu</td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.roles}"></td>
-                <td><a th:href="@{/{userId}/editUser (userId=${user.id})}"><img alt="edytuj" src="https://dabuttonfactory.com/button.png?t=edytuj&f=Calibri-Bold&ts=20&tc=fff&tshs=1&tshc=000&w=100&h=25&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+                <td><a th:href="@{/{userId}/editUser (userId=${user.id})}"><img alt="edytuj" src="https://dabuttonfactory.com/button.png?t=edytuj&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=100&h=25&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
                 </td>
             </tr>
         </table>

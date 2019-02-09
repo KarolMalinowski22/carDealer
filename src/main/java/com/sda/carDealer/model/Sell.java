@@ -26,4 +26,5 @@ public class Sell {
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "nextOwner")
     private Operator operator;
+    private Boolean canceled;
 }

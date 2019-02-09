@@ -55,5 +55,5 @@ public class Car {
     private List<Operator> operators;
     @Column(name = "not_damaged")
     private Boolean isNotDamaged;
-
+    private Boolean visible;
 }

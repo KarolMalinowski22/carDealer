@@ -22,6 +22,7 @@ public class Operator {
     private String idCardNumber;
     @ManyToMany(mappedBy = "operators")
     private List<Car> cars;
+    private Boolean visible;
 
     @Override
     public boolean equals(Object o) {

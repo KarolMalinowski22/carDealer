@@ -19,6 +19,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final String owner = "OWNER";
     private final String admin = "ADMIN";
     private final String customer = "CUSTOMER";
+    private final String seller = "SELLER";
     @Autowired
     private UserDetailsService appUserDetailsService;
     @Bean

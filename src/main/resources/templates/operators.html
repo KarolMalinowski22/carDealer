@@ -100,6 +100,9 @@
                 <td th:text="${operator.firstName}"></td>
                 <td th:text="${operator.lastName}"></td>
                 <td th:text="${operator.idCardNumber}"></td>
+                <td><a th:href="@{/{id}/editOperator (id=${operator.id})}"><img
+                        alt="Edytuj"
+                        src="https://dabuttonfactory.com/button.png?t=Edytuj&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=25&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></td>
             </tr>
         </table>
     </div>

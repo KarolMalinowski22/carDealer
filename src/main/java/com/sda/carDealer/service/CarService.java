@@ -42,7 +42,7 @@ public class CarService implements CarServiceInterface{
 
     @Override
     public List<Car> getAllAvailable() {
-        List<Car> cars = carRepository.findAll();
+        List<Car> cars = carRepository.findAllByVisibleTrue();
         cars.removeAll(carRepository.findAllById(sellRepository.getAllCarsId()));
         return cars;
     }

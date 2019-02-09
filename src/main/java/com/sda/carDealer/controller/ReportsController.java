@@ -8,17 +8,11 @@ import com.sda.carDealer.service.SellServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.thymeleaf.expression.Dates;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/reports")
@@ -48,6 +42,18 @@ public class ReportsController {
         model.addAttribute("date", dateDisplay);
         model.addAttribute("buys", allBuy);
         return "buyReport";
+    }
+
+    @RequestMapping("/{id}/editSellReport")
+    public String editSellReportForm(Model model, @PathVariable(name = "id")Long id){
+        model.addAttribute("sell", sellService.getById(id).get());
+        return "editSellForm";
+    }
+
+    @PostMapping("/editSell")
+    public String editSellReport(Model model, @ModelAttribute(name = "sell")Sell sell){
+        sellService.save(sell);
+        return "redirect:/reports/sellReport";
     }
     /**
      *

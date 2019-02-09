@@ -25,27 +25,29 @@
 <body>
 <div class="menu"><h2>Menu</h2>
     <a href="/"><img alt="strona główna" src="https://dabuttonfactory.com/button.png?t=Strona+g%C5%82%C3%B3wna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a></div>
-<form th:object="${operator}" th:action="@{/customerRegistration}" method="post">
+<form th:object="${sell}" th:action="@{/reports/editSell}" method="post">
     <table>
         <tr>
-            <th>Dane klienta:</th>
+            <th>Dane sprzedaży:</th>
         </tr>
         <tr>
-            <td>Imię <input type="text" th:field="${operator.firstName}" required pattern=".*\S+.*"
-                            title="This field is required"></td>
-        </tr>
-        <tr>
-            <td>Nazwisko <input type="text" th:field="${operator.lastName}" required pattern=".*\S+.*"
+            <td>Data <input type="text" th:value="*{date}" th:field="*{date}" required pattern=".*\S+.*"
                                 title="This field is required"></td>
         </tr>
         <tr>
-            <td>Numer dowodu osobistego &nbsp;<input type="text" th:field="${operator.idCardNumber}" required
-                                               pattern=".*\S+.*"
-                                               title="This field is required"></td>
+            <td>Pojazd <input type="text" th:value="*{car.manufacturer + ' ' + car.model}" th:field="*{car}"></td>
+        </tr>
+        <tr>
+            <td>Cena <input type="text" th:value="*{price}" th:field="*{price}">
+                <input type="hidden" th:field="*{id}" th:value="*{id}"></td>
+        </tr>
+        <tr>
+            <td>Odstąpiono od umowy
+                <input type="checkbox" th:field="*{canceled}" value="true">
+            </td>
         </tr>
     </table>
-    <input type="submit" value="dodaj">
+    <input type="submit" value="zapisz">
 </form>
-<div th:if="duplicate != null"><h3 th:text="${duplicate}"></h3></div>
 </body>
 </html>

@@ -8,11 +8,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface SellServiceInterface {
     List<Sell> getAllSell();
-    void createNewSell(Sell sell);
-
+    void save(Sell sell);
     List<Sell> getAllSellByMonth(LocalDateTime date);
+    Optional<Sell> getById(Long id);
 }

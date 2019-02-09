@@ -7,10 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,13 +44,34 @@ public class CustomerController {
 
     @PostMapping("/operatorRegistration")
     public String customerRegistrationForm(@ModelAttribute("operator") Operator operator, Model model) {
-        for (Operator operatorRegistered : operatorService.getAll()) {
-            if (operatorRegistered.equals(operator)) {
-                model.addAttribute("duplicate", "Już istnieje podmiot o takich danych");
-                return "operatorRegistrationForm";
-            }
+        if(checkIfThereIsSuchOperator(operator)){
+            model.addAttribute("duplicate", "Już istnieje podmiot o takich danych");
+            return "operatorRegistrationForm";
         }
         operatorService.addNewCustomer(operator);
         return "redirect:/operators";
+    }
+    @RequestMapping("/{operatorId}/editOperator")
+    public String editOperatorForm(Model model, @PathVariable(name = "operatorId")Long operatorId){
+        model.addAttribute("operator", operatorService.getById(operatorId).get());
+        return "editOperatorForm";
+    }
+    @PostMapping("/editOperator")
+    public String editOperator(Model model, @ModelAttribute(name = "operator")Operator operator){
+        if(checkIfThereIsSuchOperator(operator)){
+            model.addAttribute("operator", operator);
+            model.addAttribute("duplicate", "Już istnieje podmiot o takich danych");
+            return "editOperatorForm";
+        }
+        operatorService.addNewCustomer(operator);
+        return "redirect:/operators";
+    }
+    private boolean checkIfThereIsSuchOperator(Operator operator){
+        for (Operator operatorRegistered : operatorService.getAll()) {
+            if (operatorRegistered.equals(operator)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
