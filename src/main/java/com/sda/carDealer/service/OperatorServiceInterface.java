@@ -14,4 +14,5 @@ public interface OperatorServiceInterface {
     List<Operator> getAll();
     Page<Operator> getAllPaginated(Pageable pageable);
     Optional<Operator> getById(Long id);
+    Operator updateCustomer(Operator operator);
 }

@@ -61,9 +61,12 @@
     <a href="/"><img alt="strona główna"
                      src="https://dabuttonfactory.com/button.png?t=Strona+g%C5%82%C3%B3wna&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
 </div>
-<form th:action="@{/addCar}" th:object="${car}" class="form" method="post">
+<form th:action="@{/editCar}" th:object="${car}" class="form" method="post">
     <div class="carTable">
         <input type="hidden" th:value="*{id}" th:field="*{id}">
+        <input type="hidden" th:value="*{visible}" th:field="*{visible}">
+        <input type="hidden" th:value="*{operators}" th:field="*{operators}">
+        <input type="hidden" th:value="*{isNotDamaged}" th:field="*{isNotDamaged}">
         <table>
 
             <tr>
@@ -142,11 +145,6 @@
             <tr>
                 <td>JAZDY PRÓBNE
                     <input type="number" th:field="*{testDriveCount}" th:value="*{testDriveCount}">
-                </td>
-            </tr>
-            <tr>
-                <td>USUŃ Z LISTY
-                    <input type="checkbox" th:field="*{visible}" value="false">
                 </td>
             </tr>
         </table>

@@ -118,8 +118,8 @@
                                                src="https://dabuttonfactory.com/button.png?t=Kup+samoch%C3%B3d&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
             </div>
             <div>
-                <a th:href="@{/customerRegistration}"><img alt="zarejestruj użytkownika"
-                                                           src="https://dabuttonfactory.com/button.png?t=Zarejestruj+klienta&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+                <a th:href="@{/operatorRegistration}"><img alt="dodaj użytkownika"
+                                                           src="https://dabuttonfactory.com/button.png?t=Dodaj+klienta&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=50&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
             </div>
             <div>
                 <a th:href="@{/addCar}"><img alt="dodaj samochód"
@@ -132,11 +132,11 @@
         <table cellspacing="0">
             <tr>
                 <th>ID</th>
-                <th>Manufacturer</th>
+                <th>Marka</th>
                 <th>Model</th>
-                <th>Production Year</th>
-                <th>Mileage</th>
-                <th>Fuel</th>
+                <th>Rok Produkcji</th>
+                <th>Przebieg</th>
+                <th>Paliwo</th>
             </tr>
             <tr th:each="car : ${carsPage}">
                 <td th:text="${car.id}"></td>

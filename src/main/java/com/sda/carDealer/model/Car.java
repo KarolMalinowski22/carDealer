@@ -2,6 +2,9 @@ package com.sda.carDealer.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity(name = "Cars")
+@DynamicInsert
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,5 +59,6 @@ public class Car {
     private List<Operator> operators;
     @Column(name = "not_damaged")
     private Boolean isNotDamaged;
+    @ColumnDefault(value = "true")
     private Boolean visible;
 }

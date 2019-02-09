@@ -32,7 +32,8 @@
         </tr>
         <tr>
             <td>Data <input type="text" th:value="*{date}" th:field="*{date}" required pattern=".*\S+.*"
-                                title="This field is required"></td>
+                                title="This field is required">
+            <input type="hidden" th:value="*{operator}" th:field="*{operator}"></td>
         </tr>
         <tr>
             <td>Pojazd <input type="text" th:value="*{car.manufacturer + ' ' + car.model}" th:field="*{car}"></td>

@@ -45,12 +45,14 @@
                                                      title="This field is required"></td>
         </tr>
         <tr>
-            <td>Usuń z listy
-                <input type="checkbox" th:field="*{visible}" value="false">
+            <td>
+                <a th:href="@{/{id}/removeOperatorFromList (id=*{id})}"><img alt="Usuń" src="https://dabuttonfactory.com/button.png?t=Usu%C5%84&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=25&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763"></a>
+            </td>
+            <td>
+                <input type="image" src="https://dabuttonfactory.com/button.png?t=Dodaj&f=Calibri-Bold&ts=15&tc=fff&tshs=1&tshc=000&w=150&h=25&c=5&bgt=gradient&bgc=3d85c6&ebgc=073763">
             </td>
         </tr>
     </table>
-    <input type="submit" value="dodaj">
 </form>
 <div th:if="duplicate != null"><h3 th:text="${duplicate}"></h3></div>
 </body>

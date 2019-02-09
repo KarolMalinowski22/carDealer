@@ -35,7 +35,14 @@ public class CustomerController {
         }
         return "operators";
     }
-
+    @RequestMapping("/{id}/removeOperatorFromList")
+    public String removeOperatorFromList(@PathVariable(name = "id")Long operatorId){
+        Optional<Operator> operatorOpt = operatorService.getById(operatorId);
+        Operator operator = operatorOpt.get();
+        operator.setVisible(false);
+        operatorService.updateCustomer(operator);
+        return "redirect:/operators";
+    }
     @RequestMapping("/operatorRegistration")
     public String customerRegistrationForm(Model model) {
         model.addAttribute("operator", new Operator());

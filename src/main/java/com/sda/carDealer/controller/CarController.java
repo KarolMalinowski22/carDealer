@@ -62,6 +62,23 @@ public class CarController {
         model.addAttribute("car", carService.findById(carId).get());
         return "editCarForm";
     }
+    @PostMapping("/editCar")
+    public String editCar(@Valid @ModelAttribute("car") Car car,
+                         BindingResult bindingResultCar,
+                         @ModelAttribute("owner") Operator operator,
+                         Model model) {
+        if (bindingResultCar.hasErrors()) {
+            model.addAttribute("operator", operator);
+            return "editCarForm";
+        }
+        operator = customerService.addNewCustomer(operator);
+        if (car.getOperators() == null) {
+            car.setOperators(new ArrayList<>());
+        }
+        car.getOperators().add(operator);
+        carService.addNewCar(operator, car);
+        return "redirect:/";
+    }
 
     @RequestMapping("/addCar")
     public String addCarForm(Model model) {
@@ -74,11 +91,9 @@ public class CarController {
     public String addCar(@Valid @ModelAttribute("newCar") Car newCar,
                          BindingResult bindingResultCar,
                          @ModelAttribute("owner") Operator operator,
-                         BindingResult bindingResultCustomer,
                          Model model) {
-        if (bindingResultCar.hasErrors() || bindingResultCustomer.hasErrors()) {
+        if (bindingResultCar.hasErrors()) {
             model.addAttribute("operator", new Operator());
-            model.addAttribute("newCar", new Car());
             return "addCarForm";
         }
         operator = customerService.addNewCustomer(operator);
@@ -110,13 +125,15 @@ public class CarController {
             model.addAttribute("newCar", new Car());
             return "buyCarForm";
         }
-        if (newCar.getOperators().size() > 0) {
-            ///if car has more than one owner
-            if (carService.findById(newCar.getId()).get().getOperators().size() > 1) {
-                model.addAttribute("toManyOwners", "Aby kupić samochód, sprzedający musi być jedynym właścicielem pojazdu.");
-                return "buyCarForm";
-            }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("operator", operator);
+            return "buyCarForm";
         }
+        operator = customerService.addNewCustomer(operator);
+        if (newCar.getOperators() == null) {
+            newCar.setOperators(new ArrayList<>());
+        }
+        newCar.getOperators().add(operator);
         if (bindingResult.hasErrors()) {
             return "buyCarForm";
         }
@@ -184,7 +201,7 @@ public class CarController {
             Car car = carOptional.get();
             model.addAttribute("car", car);
             model.addAttribute("sell", new Sell());
-            model.addAttribute("customer", new Operator());
+            model.addAttribute("operator", new Operator());
         }
         return "sellCarForm";
     }
@@ -199,6 +216,7 @@ public class CarController {
         Car car = carService.findById(carId).get();
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("operator", operator);
             model.addAttribute("car", car);
             return "sellCarForm";
         }

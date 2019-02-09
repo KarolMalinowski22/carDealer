@@ -29,9 +29,11 @@ public class OperatorService implements OperatorServiceInterface {
         return operator;
     }
 
+
+
     @Override
     public List<Operator> getAll() {
-        return operatorRepository.findAll();
+        return operatorRepository.findAllByVisibleTrue();
     }
 
     @Override
@@ -52,5 +54,11 @@ public class OperatorService implements OperatorServiceInterface {
     @Override
     public Optional<Operator> getById(Long id) {
         return operatorRepository.findById(id);
+    }
+
+    @Override
+    public Operator updateCustomer(Operator operator) {
+        operatorRepository.save(operator);
+        return operator;
     }
 }

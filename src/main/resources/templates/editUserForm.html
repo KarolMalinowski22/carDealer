@@ -28,6 +28,11 @@
             <input name="ownerRole" th:if="*{roles.contains('ROLE_OWNER')}" type="checkbox" th:value="ROLE_OWNER" checked/>
             <input name="ownerRole" th:unless="*{roles.contains('ROLE_OWNER')}" type="checkbox" th:value="ROLE_OWNER" />
         </label>
+
+        <label>ROLE_EMPLOYEE
+            <input name="ownerRole" th:if="*{roles.contains('ROLE_EMPLOYEE')}" type="checkbox" th:value="ROLE_EMPLOYEE" checked/>
+            <input name="ownerRole" th:unless="*{roles.contains('ROLE_EMPLOYEE')}" type="checkbox" th:value="ROLE_EMPLOYEE" />
+        </label>
     </div>
     <button type="submit">Edytuj</button>
 </form>
